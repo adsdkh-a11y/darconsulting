@@ -55,17 +55,23 @@ export function Scale({ label, value, onChange, lowLabel, highLabel }: { label: 
   );
 }
 
-const FACES = ["😣", "🙁", "😐", "🙂", "😄"];
+const FACES = [
+  "M8 16c1.2-1 2.6-1.4 4-1.4S14.8 15 16 16M8 10l2 1M16 10l-2 1",
+  "M8.5 15.8c1-.7 2.3-1 3.5-1s2.5.3 3.5 1M9 10h.01M15 10h.01",
+  "M8.5 15h7M9 10h.01M15 10h.01",
+  "M8.5 14c1 1.3 2.2 1.9 3.5 1.9s2.5-.6 3.5-1.9M9 10h.01M15 10h.01",
+  "M7.5 13.5c1 2.2 2.6 3.2 4.5 3.2s3.5-1 4.5-3.2zM9 9.8h.01M15 9.8h.01",
+];
 export function Overall({ label, labels, value, onChange }: { label: string; labels: string[]; value: number | null; onChange: (v: number) => void }) {
   return (
     <fieldset>
-      <legend className="mb-3 font-display text-xl">{label}</legend>
+      <legend className="mb-3 font-display text-xl font-extrabold tracking-[-0.03em]">{label}</legend>
       <div className="grid grid-cols-5 gap-2">
-        {FACES.map((f, i) => (
+        {FACES.map((d, i) => (
           <button type="button" key={i} aria-pressed={value === i + 1} aria-label={labels[i]} onClick={() => onChange(i + 1)}
-            className={cx("tap flex flex-col items-center rounded-2xl border py-2", value === i + 1 ? "border-primary bg-primary-soft" : "border-line bg-surface")}>
-            <span className="text-3xl" aria-hidden>{f}</span>
-            <span className="mt-1 text-[11px] leading-tight text-ink-2">{labels[i]}</span>
+            className={cx("tap flex flex-col items-center rounded-2xl border py-2 transition active:scale-95", value === i + 1 ? "border-primary bg-primary-soft text-primary" : "border-line bg-surface-2 text-ink-2")}>
+            <svg viewBox="0 0 24 24" className="size-8" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" aria-hidden><circle cx="12" cy="12" r="9.5" /><path d={d} /></svg>
+            <span className="mt-1 text-[11px] font-semibold leading-tight">{labels[i]}</span>
           </button>
         ))}
       </div>

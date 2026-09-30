@@ -104,7 +104,7 @@ async function seedAnna() {
     const bm = recent ? 5 + Math.round(rnd()) : 1 + Math.round(rnd() * 2);
     await logSymptoms(u, {
       date: addDays(today, d),
-      overall: recent ? 2 : 3 + Math.round(rnd()),
+      overall: d === 0 ? undefined : recent ? 2 : 3 + Math.round(rnd()),
       bowelMovements: bm,
       stoolConsistency: recent ? 6 : 4 + Math.round(rnd()),
       blood: recent && d === 0 ? 1 : 0,

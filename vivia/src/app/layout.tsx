@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { cookies } from "next/headers";
+import "@fontsource-variable/manrope";
 import "./globals.css";
 import { getLocale } from "@/server/locale";
 import { dictionary, RTL } from "@/lib/i18n";
@@ -19,8 +20,8 @@ export const viewport: Viewport = {
   initialScale: 1,
   viewportFit: "cover",
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f6f4ef" },
-    { media: "(prefers-color-scheme: dark)", color: "#121615" },
+    { media: "(prefers-color-scheme: light)", color: "#f1f5f4" },
+    { media: "(prefers-color-scheme: dark)", color: "#070c0b" },
   ],
 };
 

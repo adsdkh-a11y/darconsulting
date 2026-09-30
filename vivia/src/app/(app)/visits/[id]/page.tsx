@@ -20,7 +20,7 @@ export default async function VisitDetail({ params }: { params: Promise<{ id: st
       {v.summaries.length > 0 && (
         <>
           <SectionTitle>{t("visit.summaries")}</SectionTitle>
-          <Card className="py-1">{v.summaries.map((s) => <ListLink key={s.id} href={`/summaries/${s.id}`} icon="📋" title={t("sum.title")} detail={fmtDay(s.createdAt, locale)} />)}</Card>
+          <Card className="py-1">{v.summaries.map((s) => <ListLink key={s.id} href={`/summaries/${s.id}`} icon="clipboard" title={t("sum.title")} detail={fmtDay(s.createdAt, locale)} />)}</Card>
         </>
       )}
     </div>

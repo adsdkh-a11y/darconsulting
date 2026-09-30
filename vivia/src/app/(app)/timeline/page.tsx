@@ -4,6 +4,7 @@ import { getT } from "@/server/locale";
 import { buildTimeline, type TimelineKind } from "@/server/services/timeline";
 import { Card, PageHeader, Pill, cx } from "@/components/ui";
 import { AddRecord } from "@/components/AddRecord";
+import { Icon, type IconName } from "@/components/Icon";
 import { fmtDay, todayDay } from "@/lib/dates";
 import type { DictKey } from "@/lib/i18n";
 
@@ -16,7 +17,7 @@ const FILTERS: { key: string; label: DictKey; kinds?: TimelineKind[] }[] = [
   { key: "events", label: "tl.filter.events", kinds: ["event", "visit"] },
   { key: "documents", label: "tl.filter.documents", kinds: ["document"] },
 ];
-const ICON: Record<TimelineKind, string> = { symptoms: "✍️", medication: "💊", medication_change: "💊", lab: "🧪", procedure: "🔬", event: "🏥", document: "📄", visit: "🩺", questionnaire: "📋" };
+const ICON: Record<TimelineKind, IconName> = { symptoms: "pulse", medication: "pill", medication_change: "pill", lab: "flask", procedure: "scope", event: "hospital", document: "file", visit: "clipboard", questionnaire: "clipboard" };
 
 export default async function Timeline({ searchParams }: { searchParams: Promise<{ f?: string }> }) {
   const user = await requirePageUser();
@@ -36,7 +37,7 @@ export default async function Timeline({ searchParams }: { searchParams: Promise
   const row = (i: (typeof items)[number]) => {
     const inner = (
       <div className="flex gap-3 py-3">
-        <span className="grid size-10 shrink-0 place-items-center rounded-2xl bg-surface-2" aria-hidden>{ICON[i.kind]}</span>
+        <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-surface-2" aria-hidden><Icon name={ICON[i.kind]} /></span>
         <div className="min-w-0 flex-1">
           <p className="font-medium">{i.title}</p>
           {i.detail && <p className="text-sm text-ink-2">{i.detail}</p>}

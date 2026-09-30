@@ -20,7 +20,7 @@ export default async function Visits() {
       <AddVisit />
       <Card className="mt-3 py-1">
         {visits.length === 0 ? <p className="py-3 text-ink-2">{t("visit.none")}</p> : visits.map((v) => (
-          <ListLink key={v.id} href={`/visits/${v.id}`} icon="🩺" title={v.doctor?.name ?? v.reason ?? "Appointment"} detail={fmtDay(v.scheduledAt, locale)}
+          <ListLink key={v.id} href={`/visits/${v.id}`} icon="pulse" title={v.doctor?.name ?? v.reason ?? "Appointment"} detail={fmtDay(v.scheduledAt, locale)}
             right={v.scheduledAt.getTime() > now ? <Pill tone="primary">{t("home.upcoming")}</Pill> : undefined} />
         ))}
       </Card>
@@ -28,7 +28,7 @@ export default async function Visits() {
         <>
           <SectionTitle>{t("visit.summaries")}</SectionTitle>
           <Card className="py-1">
-            {summaries.map((s) => <ListLink key={s.id} href={`/summaries/${s.id}`} icon="📋" title={t("sum.title")} detail={`${fmtDay(s.periodStart, locale)} – ${fmtDay(s.periodEnd, locale)}`} />)}
+            {summaries.map((s) => <ListLink key={s.id} href={`/summaries/${s.id}`} icon="clipboard" title={t("sum.title")} detail={`${fmtDay(s.periodStart, locale)} – ${fmtDay(s.periodEnd, locale)}`} />)}
           </Card>
         </>
       )}

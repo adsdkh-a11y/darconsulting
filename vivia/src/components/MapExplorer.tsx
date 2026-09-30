@@ -7,11 +7,12 @@ import { PlaceCard } from "./PlaceCard";
 import { FALLBACK_CENTER, fetchNearby, locateOnce, type Place } from "@/lib/places";
 import { STOMA_FEATURES } from "@/lib/schemas";
 import type { DictKey } from "@/lib/i18n";
+import { Icon, type IconName } from "./Icon";
 
 const LeafletMap = dynamic(() => import("./LeafletMap"), { ssr: false, loading: () => <div className="h-72 animate-pulse rounded-3xl bg-surface-2" /> });
 
-const CATEGORIES = [
-  ["BATHROOM", "🚻"], ["PHARMACY", "💊"], ["HOSPITAL", "🏥"], ["IBD_CENTER", "🩺"], ["STATION", "🚆"], ["AIRPORT", "✈️"], ["HOTEL", "🏨"],
+const CATEGORIES: readonly (readonly [string, IconName])[] = [
+  ["BATHROOM", "wc"], ["PHARMACY", "pill"], ["HOSPITAL", "hospital"], ["IBD_CENTER", "pulse"], ["STATION", "train"], ["AIRPORT", "plane"], ["HOTEL", "bedh"],
 ] as const;
 
 export function MapExplorer({ stoma, initialCategory }: { stoma: boolean; initialCategory: string }) {
@@ -43,19 +44,19 @@ export function MapExplorer({ stoma, initialCategory }: { stoma: boolean; initia
     if (pos) { setCenter(pos); setLocated(true); setNote(null); } else setNote(t("map.locationDenied"));
   }
 
-  const chip = (on: boolean) => cx("tap shrink-0 rounded-full border px-4 py-2 text-sm font-semibold", on ? "border-primary bg-primary text-primary-ink" : "border-line bg-surface text-ink-2");
+  const chip = (on: boolean) => cx("tap inline-flex shrink-0 items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-bold", on ? "border-primary bg-primary text-primary-ink" : "border-line bg-surface text-ink-2");
 
   return (
     <div>
       <div className="-mx-4 mb-3 flex gap-2 overflow-x-auto px-4 pb-1" role="radiogroup" aria-label="Category">
         {CATEGORIES.map(([c, icon]) => (
           <button key={c} role="radio" aria-checked={category === c} className={chip(category === c)} onClick={() => setCategory(c)}>
-            <span aria-hidden>{icon}</span> {t(`map.cat.${c}` as DictKey)}
+            <Icon name={icon} className="size-[18px]" /> {t(`map.cat.${c}` as DictKey)}
           </button>
         ))}
       </div>
       <div className="mb-3 flex flex-wrap gap-2">
-        <Button variant={located ? "secondary" : "primary"} className="px-4 py-2 text-sm" onClick={useMyLocation}>📍 {t("map.useLocation")}</Button>
+        <Button variant={located ? "secondary" : "primary"} className="px-4 py-2 text-sm" onClick={useMyLocation}><Icon name="pin" className="size-4" /> {t("map.useLocation")}</Button>
         <button aria-pressed={openNow} className={chip(openNow)} onClick={() => setOpenNow(!openNow)}>{t("map.openNowOnly")}</button>
         <button aria-pressed={verifiedOnly} className={chip(verifiedOnly)} onClick={() => setVerified(!verifiedOnly)}>{t("map.verifiedOnly")}</button>
       </div>
@@ -64,7 +65,7 @@ export function MapExplorer({ stoma, initialCategory }: { stoma: boolean; initia
 
       {category === "BATHROOM" && (
         <details className="mb-3 rounded-2xl border border-line bg-surface px-4" open={stoma}>
-          <summary className="tap flex cursor-pointer items-center font-semibold">{stoma ? `🩹 ${t("map.stomaMode")}` : t("map.stomaFilters")}{features.length ? ` (${features.length})` : ""}</summary>
+          <summary className="tap flex cursor-pointer items-center font-semibold">{stoma ? t("map.stomaMode") : t("map.stomaFilters")}{features.length ? ` (${features.length})` : ""}</summary>
           <div className="flex flex-wrap gap-2 pb-3">
             {STOMA_FEATURES.map((f) => {
               const on = features.includes(f);

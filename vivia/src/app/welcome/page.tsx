@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getT } from "@/server/locale";
 import { ButtonLink } from "@/components/ui";
 import { LanguagePicker } from "@/components/LanguagePicker";
+import { Icon } from "@/components/Icon";
 
 export default async function Welcome() {
   const { t, locale } = await getT();
@@ -18,7 +19,7 @@ export default async function Welcome() {
         <ul className="mt-8 space-y-3">
           {values.map((v) => (
             <li key={v} className="flex items-start gap-3">
-              <span className="mt-1 grid size-6 shrink-0 place-items-center rounded-full bg-primary-soft text-sm text-primary" aria-hidden>✓</span>
+              <span className="mt-1 grid size-6 shrink-0 place-items-center rounded-full bg-primary-soft text-sm text-primary" aria-hidden><Icon name="check" className="size-3.5" /></span>
               <span>{t(v)}</span>
             </li>
           ))}
@@ -28,7 +29,7 @@ export default async function Welcome() {
         <ButtonLink href="/register" className="w-full text-lg">{t("auth.getStarted")}</ButtonLink>
         <ButtonLink href="/login" variant="secondary" className="w-full">{t("auth.haveAccount")}</ButtonLink>
         <Link href="/bathroom" className="tap flex w-full items-center justify-center gap-2 rounded-2xl bg-accent-soft px-5 py-3 font-semibold text-accent">
-          <span aria-hidden>🚻</span> {t("auth.bathroomNoAccount")}
+          <Icon name="wc" className="size-5" /> {t("auth.bathroomNoAccount")}
         </Link>
         <p className="pt-2 text-center text-xs text-muted">{t("app.notDoctor")}</p>
       </div>

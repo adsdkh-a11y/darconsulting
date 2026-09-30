@@ -21,7 +21,7 @@ export default async function LocationDetail({ params }: { params: Promise<{ id:
         {l.reliability !== null && <Pill>★ {t("map.reliability", { r: l.reliability, n: l.reviews.length })}</Pill>}
       </div>
       <Card>
-        {l.openingHours && <p>🕒 {l.openingHours}</p>}
+        {l.openingHours && <p>{l.openingHours}</p>}
         <p className="mt-1 text-sm text-muted">{t("common.source")}: {l.source}{l.lastVerifiedAt ? ` · ${t("map.lastVerified", { date: fmtDay(l.lastVerifiedAt, locale) })}` : ""}</p>
         <a className="tap mt-3 inline-flex items-center rounded-2xl bg-primary px-5 font-semibold text-primary-ink" target="_blank" rel="noreferrer"
           href={`https://www.google.com/maps/dir/?api=1&destination=${l.latitude},${l.longitude}&travelmode=walking`}>{t("map.openInMaps")} ↗</a>

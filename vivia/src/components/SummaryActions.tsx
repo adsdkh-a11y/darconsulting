@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useI18n } from "./I18n";
 import { api } from "@/lib/api";
 import { Button, Card, Input, Notice, Pill } from "./ui";
+import { Icon } from "./Icon";
 
 type Link = { id: string; expiresAt: string; revoked: boolean; accessCount: number };
 
@@ -19,8 +20,8 @@ export function SummaryActions({ id, links }: { id: string; links: Link[] }) {
     <div className="mb-4 print:hidden">
       <div className="grid grid-cols-3 gap-2">
         <a href={`/api/summaries/${id}/pdf`} className="tap inline-flex items-center justify-center rounded-2xl bg-primary px-2 text-sm font-semibold text-primary-ink">⬇ {t("sum.pdf")}</a>
-        <Button variant="secondary" className="px-2 text-sm" onClick={() => window.print()}>🖨 {t("sum.print")}</Button>
-        <Button variant="secondary" className="px-2 text-sm" aria-expanded={share} onClick={() => setShare(!share)}>🔗 {t("sum.share")}</Button>
+        <Button variant="secondary" className="px-2 text-sm" onClick={() => window.print()}><Icon name="print" className="size-4" /> {t("sum.print")}</Button>
+        <Button variant="secondary" className="px-2 text-sm" aria-expanded={share} onClick={() => setShare(!share)}><Icon name="link" className="size-4" /> {t("sum.share")}</Button>
       </div>
       {share && (
         <Card className="mt-3">

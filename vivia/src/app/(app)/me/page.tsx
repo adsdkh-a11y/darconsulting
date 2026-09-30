@@ -21,14 +21,14 @@ export default async function Me() {
     <div>
       <PageHeader title={t("prof.title")} />
       <Card className="py-1">
-        <ListLink href="/visits" icon="🩺" title={t("prof.links.visits")} />
-        <ListLink href="/documents" icon="📄" title={t("prof.links.documents")} />
-        <ListLink href="/medications" icon="💊" title={t("prof.links.medications")} />
-        <ListLink href="/trends" icon="📈" title={t("prof.links.trends")} />
-        <ListLink href="/conflicts" icon="⚖️" title={t("prof.links.conflicts")} right={conflicts ? <Pill tone="warn">{conflicts}</Pill> : undefined} />
-        <ListLink href="/emergency-card" icon="🆘" title={t("prof.links.emergency")} />
-        <ListLink href="/travel" icon="✈️" title={t("prof.links.travel")} />
-        <ListLink href="/privacy" icon="🔒" title={t("prof.links.privacy")} />
+        <ListLink href="/visits" icon="pulse" title={t("prof.links.visits")} />
+        <ListLink href="/documents" icon="file" title={t("prof.links.documents")} />
+        <ListLink href="/medications" icon="pill" title={t("prof.links.medications")} />
+        <ListLink href="/trends" icon="trend" title={t("prof.links.trends")} />
+        <ListLink href="/conflicts" icon="scale" title={t("prof.links.conflicts")} right={conflicts ? <Pill tone="warn">{conflicts}</Pill> : undefined} />
+        <ListLink href="/emergency-card" icon="alert" title={t("prof.links.emergency")} />
+        <ListLink href="/travel" icon="plane" title={t("prof.links.travel")} />
+        <ListLink href="/privacy" icon="lock" title={t("prof.links.privacy")} />
       </Card>
       <SectionTitle>{t("prof.profile")}</SectionTitle>
       <ProfileEditor initial={{ displayName: profile!.displayName, disease: dx?.disease ?? "UNKNOWN", diagnosedYear: dx?.diagnosedAt?.getUTCFullYear() ?? null, hasStoma: profile!.hasStoma, stomaType: profile!.stomaType, trackedSymptoms: profile!.trackedSymptoms }} />

@@ -5,6 +5,7 @@ import { useI18n } from "./I18n";
 import { api } from "@/lib/api";
 import { Button, Card, Field, Input, Notice, cx } from "./ui";
 import type { DictKey } from "@/lib/i18n";
+import { Icon } from "./Icon";
 
 export type CardView = {
   name: string; condition: string | null; medications: string[] | null; allergies: string | null; surgeries: string[] | null;
@@ -106,7 +107,7 @@ export function EmergencyCardEditor({ initial }: { initial: CardView }) {
             </div>
           </>
         ) : (
-          <Button variant="secondary" className="w-full" onClick={() => setOffline(saveLocal(view, labels))}>📲 {t("ec.saveOffline")}</Button>
+          <Button variant="secondary" className="w-full" onClick={() => setOffline(saveLocal(view, labels))}><Icon name="phone" className="size-5" /> {t("ec.saveOffline")}</Button>
         )}
       </Card>
     </div>

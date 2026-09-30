@@ -6,6 +6,7 @@ import { api } from "@/lib/api";
 import { SUMMARY_SECTIONS } from "@/lib/schemas";
 import { Button, Card, Notice, cx } from "./ui";
 import type { DictKey } from "@/lib/i18n";
+import { Icon } from "./Icon";
 
 /** "Prepare my doctor visit" — one tap with sensible defaults, options one tap further. */
 export function GenerateSummary({ visitId, concerns }: { visitId?: string; concerns?: string | null }) {
@@ -31,7 +32,7 @@ export function GenerateSummary({ visitId, concerns }: { visitId?: string; conce
 
   return (
     <Card className="border-none bg-primary-soft">
-      <Button className="w-full text-lg" disabled={busy || !sections.length} onClick={go}>🩺 {busy ? t("sum.generating") : t("visit.prepare")}</Button>
+      <Button className="w-full text-lg" disabled={busy || !sections.length} onClick={go}><Icon name="pulse" className="size-5" /> {busy ? t("sum.generating") : t("visit.prepare")}</Button>
       <button className="tap mt-2 w-full text-sm font-semibold text-primary" aria-expanded={options} onClick={() => setOptions(!options)}>
         {t("sum.sections")} · {t("sum.period")}: {periodDays} {t("common.days")}
       </button>

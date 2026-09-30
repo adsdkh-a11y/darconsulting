@@ -17,7 +17,7 @@ export function ResolveConflict({ id, awaitingDoctor }: { id: string; awaitingDo
         <Button variant="secondary" onClick={() => go("KEEP_EXISTING")}>{t("conf.keepExisting")}</Button>
         <Button onClick={() => go("KEEP_NEW")}>{t("conf.keepNew")}</Button>
       </div>
-      {!awaitingDoctor && <Button variant="ghost" onClick={() => go("NEEDS_DOCTOR_CONFIRMATION")}>🩺 {t("conf.doctor")}</Button>}
+      {!awaitingDoctor && <Button variant="ghost" onClick={() => go("NEEDS_DOCTOR_CONFIRMATION")}>{t("conf.doctor")}</Button>}
     </div>
   );
 }

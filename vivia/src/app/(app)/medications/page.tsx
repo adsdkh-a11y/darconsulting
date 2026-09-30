@@ -19,7 +19,7 @@ export default async function Medications() {
       ) : (
         <Card className="py-1">
           {active.map((m) => (
-            <ListLink key={m.id} href={`/medications/${m.id}`} icon="💊"
+            <ListLink key={m.id} href={`/medications/${m.id}`} icon="pill"
               title={<>{m.name} {m.verificationStatus === "NEEDS_DOCTOR_CONFIRMATION" && <Pill tone="warn">{t("verification.NEEDS_DOCTOR_CONFIRMATION")}</Pill>}</>}
               detail={[m.dose ? `${m.dose} ${m.unit ?? ""}` : null, t(`route.${m.route}` as DictKey), m.asNeeded ? t("med.asNeeded") : m.intervalDays ? `${t("med.every")} ${m.intervalDays} ${t("med.days")}` : null].filter(Boolean).join(" · ")}
               right={m.nextDue ? <Pill tone={m.nextDue.toISOString().slice(0, 10) <= today ? "accent" : "neutral"}>{m.nextDue.toISOString().slice(0, 10) <= today ? t("med.dueToday") : fmtDay(m.nextDue, locale)}</Pill> : undefined} />

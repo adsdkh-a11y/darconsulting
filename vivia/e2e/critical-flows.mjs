@@ -61,8 +61,8 @@ await step("register with explicit consent + onboarding", async () => {
 
 await step("a normal day takes one tap", async () => {
   const t0 = Date.now();
-  await page.getByRole("button", { name: /A good day/ }).click();
-  await page.getByText("You've checked in today.").waitFor();
+  await page.getByRole("button", { name: "Good", exact: true }).click();
+  await page.getByText("Noted.").waitFor();
   console.log(`   one-tap check-in round trip: ${Date.now() - t0} ms`);
 });
 

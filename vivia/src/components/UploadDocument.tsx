@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useI18n } from "./I18n";
 import { api } from "@/lib/api";
 import { Notice } from "./ui";
+import { Icon } from "./Icon";
 
 export function UploadDocument() {
   const { t } = useI18n();
@@ -31,7 +32,7 @@ export function UploadDocument() {
     <div>
       <button type="button" disabled={busy} onClick={() => input.current?.click()}
         className="tap flex w-full flex-col items-center gap-1 rounded-3xl border-2 border-dashed border-primary/40 bg-primary-soft px-4 py-6 text-center">
-        <span className="text-3xl" aria-hidden>{busy ? "⏳" : "📄"}</span>
+        <Icon name={busy ? "refresh" : "file"} className={`size-8 ${busy ? "animate-spin" : ""}`} />
         <span className="font-semibold text-primary">{busy ? t("doc.uploading") : t("doc.upload")}</span>
         <span className="text-sm text-ink-2">{t("doc.uploadHint")}</span>
       </button>

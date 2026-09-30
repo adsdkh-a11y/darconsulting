@@ -35,6 +35,19 @@ result ≈ 0.5 s after the tap (geolocation granted).
    travel essentials, offline emergency card.
 6. **Privacy** — health-data consent, AI off by default, export, deletion, audit trail, no ads, no data sale.
 
+## Design system (v2)
+
+Direction: dark-first, fintech-grade, calm. Replaces the first warm-cream/serif look.
+
+| Element | Decision |
+|---|---|
+| Colour | One mint accent (`--primary`), coral (`--accent`) reserved for urgency (bathroom), amber for "to decide". Tokens in `vivia/src/app/globals.css`; light theme follows `prefers-color-scheme`. Chart greens validated for contrast and colour-blind separation (`#26A88C` on dark, `#0F8A72` on light). |
+| Type | Manrope (self-hosted via `@fontsource-variable/manrope`, no third-party font request). Oversized, tight-tracked numerals and headlines. |
+| Shape | 26–32 px radii, circular quick-action buttons, glass tab bar with a raised microphone button ("Tell VIVIA"). |
+| Icons | One SVG stroke set (`components/Icon.tsx`). No emoji as UI markers. |
+| Motion | Staggered rise on load, spring sheets, one-tap mood check-in with drawn checkmark, count-up figures, growing bars, pulsing urgency button and listening orb. All disabled under `prefers-reduced-motion`. |
+| Languages | EN reference, IT complete, FR/ES/DE/AR core flows; Arabic renders right-to-left. |
+
 ## Screens (MVP)
 
 | # | Screen | Route |

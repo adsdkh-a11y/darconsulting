@@ -6,6 +6,7 @@ import { useI18n } from "./I18n";
 import { api } from "@/lib/api";
 import { Button, Card, Notice, Pill, cx } from "./ui";
 import type { DictKey } from "@/lib/i18n";
+import { Icon } from "./Icon";
 
 type F = { id: string; kind: string; key: string; label: string; value: string; unit: string | null; editedValue: string | null; confidence: number; sourceSnippet: string | null; status: string; applied: boolean };
 
@@ -81,7 +82,7 @@ export function ExtractionReview({ documentId, fields: initial }: { documentId: 
       {result && (
         <div role="status" className="space-y-2">
           <Notice tone="primary">{t("rev.applied", { n: result.applied.length })}</Notice>
-          {result.conflicts.length > 0 && <Link href="/conflicts" className="block"><Notice tone="warn">⚖️ {t("rev.conflicts", { n: result.conflicts.length })} →</Notice></Link>}
+          {result.conflicts.length > 0 && <Link href="/conflicts" className="block"><Notice tone="warn"><Icon name="scale" className="me-1.5 inline size-4" />{t("rev.conflicts", { n: result.conflicts.length })} →</Notice></Link>}
         </div>
       )}
       <div className="sticky bottom-[4.5rem] -mx-4 space-y-2 bg-bg/95 px-4 pb-3 pt-2 backdrop-blur">

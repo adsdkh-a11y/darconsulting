@@ -8,6 +8,7 @@ import { localDay } from "@/lib/clientDate";
 import { Button, Card, Notice, Textarea } from "./ui";
 import { Choice, Overall, Scale, Stepper } from "./inputs";
 import type { DictKey } from "@/lib/i18n";
+import { Icon } from "./Icon";
 
 type Values = Record<string, number | null | string>;
 const SCALES = ["pain", "fatigue", "bloating", "nausea", "appetite", "sleepQuality", "stress", "mood"] as const;
@@ -65,7 +66,7 @@ export function QuickCheckin({ tracked, hasStoma }: { tracked: string[]; hasStom
   if (state === "saved")
     return (
       <Card className="text-center">
-        <p className="text-4xl" aria-hidden>✓</p>
+        <p className="text-4xl" aria-hidden><Icon name="check" className="mx-auto size-10 text-primary" /></p>
         <p className="mt-2 text-lg font-semibold" role="status">{t("log.saved")}</p>
         <div className="mt-4 flex justify-center gap-2">
           <Button variant="secondary" onClick={() => { setV({}); setState("idle"); }}>{t("log.moreDetails")}</Button>
@@ -85,7 +86,7 @@ export function QuickCheckin({ tracked, hasStoma }: { tracked: string[]; hasStom
       </div>
 
       <div className="grid grid-cols-2 gap-2">
-        <Button variant="accent" disabled={state === "saving"} onClick={() => save({ overall: 5 })}>☀️ {t("log.goodDay")}</Button>
+        <Button variant="accent" disabled={state === "saving"} onClick={() => save({ overall: 5 })}>{t("log.goodDay")}</Button>
         <Button variant="secondary" disabled={state === "saving"} onClick={repeat}>↺ {t("log.repeat")}</Button>
       </div>
 
@@ -120,7 +121,7 @@ export function QuickCheckin({ tracked, hasStoma }: { tracked: string[]; hasStom
         </Button>
       </div>
       <p className="text-center text-sm">
-        {t("log.tellInstead")} <Link href="/log/tell" className="font-semibold text-primary">🎙 {t("home.tell")}</Link>
+        {t("log.tellInstead")} <Link href="/log/tell" className="font-semibold text-primary"><Icon name="mic" className="me-1 inline size-4" />{t("home.tell")}</Link>
       </p>
     </div>
   );

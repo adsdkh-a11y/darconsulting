@@ -6,6 +6,7 @@ import { api } from "@/lib/api";
 import { localDay } from "@/lib/clientDate";
 import { Button, Card, Notice, Textarea, cx } from "./ui";
 import type { DictKey } from "@/lib/i18n";
+import { Icon } from "./Icon";
 
 type Parsed = {
   date?: string;
@@ -108,7 +109,7 @@ export function TellVivia() {
   if (saved)
     return (
       <Card className="text-center">
-        <p className="text-4xl" aria-hidden>✓</p>
+        <p className="text-4xl" aria-hidden><Icon name="check" className="mx-auto size-10 text-primary" /></p>
         <p className="mt-2 text-lg font-semibold" role="status">{t("log.saved")}</p>
         <Button className="mt-4" onClick={() => router.push("/home")}>{t("common.done")}</Button>
       </Card>
@@ -144,13 +145,13 @@ export function TellVivia() {
             )}
             {draft.medicationsMentioned?.map((m, i) => (
               <li key={m.name} className="flex items-center justify-between py-3">
-                <span className="font-medium">💊 {m.name}: {t(m.status === "TAKEN" ? "tell.medTaken" : m.status === "SKIPPED" ? "tell.medSkipped" : "tell.medDelayed")}</span>
+                <span className="font-medium"><Icon name="pill" className="me-1.5 inline size-4" />{m.name}: {t(m.status === "TAKEN" ? "tell.medTaken" : m.status === "SKIPPED" ? "tell.medSkipped" : "tell.medDelayed")}</span>
                 <button className="tap text-muted" aria-label={t("common.delete")} onClick={() => setDraft({ ...draft, medicationsMentioned: draft.medicationsMentioned!.filter((_, j) => j !== i) })}>✕</button>
               </li>
             ))}
             {draft.foods?.map((f, i) => (
               <li key={i} className="flex items-center justify-between py-3">
-                <span>🍽 {t("tell.foods")}: {f}</span>
+                <span><Icon name="food" className="me-1.5 inline size-4" />{t("tell.foods")}: {f}</span>
                 <button className="tap text-muted" aria-label={t("common.delete")} onClick={() => setDraft({ ...draft, foods: draft.foods!.filter((_, j) => j !== i) })}>✕</button>
               </li>
             ))}
@@ -170,15 +171,22 @@ export function TellVivia() {
 
   return (
     <div className="space-y-4">
+      <div className="relative grid h-[150px] place-items-center">
+        {listening && <><span className="absolute size-[92px] rounded-full border-2 border-primary" style={{ animation: "ring 1.8s ease-out infinite" }} /><span className="absolute size-[92px] rounded-full border-2 border-primary" style={{ animation: "ring 1.8s .6s ease-out infinite" }} /></>}
+        <button type="button" onClick={toggleVoice} disabled={voice === false} aria-pressed={listening} aria-label={listening ? t("tell.listening") : t("tell.speak")}
+          className={cx("relative z-10 grid size-[92px] place-items-center rounded-full bg-gradient-to-br from-[#7ff7d4] to-[#27b893] text-[#04201a] transition duration-300 disabled:opacity-40", listening && "scale-110")}>
+          <svg viewBox="0 0 24 24" className="size-10" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden><rect x="9" y="3" width="6" height="11" rx="3" /><path d="M5 11a7 7 0 0 0 14 0M12 18v3" /></svg>
+        </button>
+      </div>
+      <div className="-mt-2 flex h-[26px] items-center justify-center gap-1" aria-hidden>
+        {Array.from({ length: 22 }, (_, k) => (
+          <i key={k} className="h-full w-1 rounded bg-primary" style={{ transform: listening ? undefined : "scaleY(.2)", opacity: listening ? 1 : 0.35, animation: listening ? `wave .9s ${k * 70}ms ease-in-out infinite` : undefined }} />
+        ))}
+      </div>
+      <p className="text-center text-sm font-semibold text-ink-2" aria-live="polite">{listening ? t("tell.listening") : voice === false ? t("tell.noVoice") : t("tell.speak")}</p>
       <Card>
-        <Textarea aria-label={t("tell.title")} placeholder={t("tell.placeholder")} value={text} onChange={(e) => setText(e.target.value)} maxLength={2000} className="min-h-40 text-lg" />
-        <div className="mt-3 flex gap-2">
-          <Button type="button" variant={listening ? "accent" : "secondary"} onClick={toggleVoice} disabled={voice === false} aria-pressed={listening} className={cx("flex-1", listening && "animate-pulse")}>
-            🎙 {listening ? t("tell.listening") : t("tell.speak")}
-          </Button>
-          <Button className="flex-1" disabled={!text.trim() || busy} onClick={interpret}>{busy ? t("common.loading") : t("tell.understand")}</Button>
-        </div>
-        {voice === false && <p className="mt-2 text-sm text-muted">{t("tell.noVoice")}</p>}
+        <Textarea aria-label={t("tell.title")} placeholder={t("tell.placeholder")} value={text} onChange={(e) => setText(e.target.value)} maxLength={2000} className="min-h-32 text-lg" />
+        <Button className="mt-3 w-full" disabled={!text.trim() || busy} onClick={interpret}>{busy ? t("common.loading") : t("tell.understand")}</Button>
       </Card>
       {error && <Notice tone="warn">{error}</Notice>}
     </div>

@@ -2,6 +2,7 @@ import type { SummaryContent } from "@/server/services/summary";
 import type { T } from "@/lib/i18n";
 import { DailyBars, LineChart } from "./charts";
 import { Card, Pill, SectionTitle } from "./ui";
+import { Icon } from "./Icon";
 
 /** Read-only Care Summary. Used by the patient view, print, and the shared link. */
 export function SummaryView({ c, t, hideQuestions = false }: { c: SummaryContent; t: T; hideQuestions?: boolean }) {
@@ -126,7 +127,7 @@ export function SummaryView({ c, t, hideQuestions = false }: { c: SummaryContent
       {c.documents && c.documents.length > 0 && (
         <>
           <SectionTitle>{t("sum.section.documents")}</SectionTitle>
-          <Card className="py-1">{c.documents.map((d) => <p key={d.id} className="border-b border-line py-2 last:border-0">📄 {d.title} <span className="text-sm text-muted">{d.date ?? ""}</span></p>)}</Card>
+          <Card className="py-1">{c.documents.map((d) => <p key={d.id} className="border-b border-line py-2 last:border-0"><Icon name="file" className="size-4 inline -mt-0.5 me-1.5" />{d.title} <span className="text-sm text-muted">{d.date ?? ""}</span></p>)}</Card>
         </>
       )}
 

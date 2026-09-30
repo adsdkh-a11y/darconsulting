@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useI18n } from "./I18n";
 import { api } from "@/lib/api";
 import { Button } from "./ui";
+import { Icon } from "./Icon";
 
 export function ExplainTerms({ id }: { id: string }) {
   const { t } = useI18n();
@@ -22,7 +23,7 @@ export function ExplainTerms({ id }: { id: string }) {
     ) : <p className="text-ink-2">—</p>;
   return (
     <Button variant="secondary" disabled={busy} onClick={async () => { setBusy(true); const r = await api<{ explanations: typeof items }>(`/api/documents/${id}/explain`); setItems(r.explanations ?? []); setBusy(false); }}>
-      💡 {busy ? t("common.loading") : t("doc.explain")}
+      <Icon name="bulb" className="size-5" /> {busy ? t("common.loading") : t("doc.explain")}
     </Button>
   );
 }

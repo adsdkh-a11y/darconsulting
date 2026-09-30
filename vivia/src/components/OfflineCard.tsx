@@ -20,7 +20,7 @@ export function OfflineCard() {
       ) : (
         <p className="text-ink-2">{t("ec.none")}</p>
       )}
-      <p className="mt-6 text-center text-sm"><Link className="font-semibold text-primary" href="/emergency-card">{t("ec.title")}</Link> · <Link className="font-semibold text-primary" href="/bathroom">🚻</Link></p>
+      <p className="mt-6 text-center text-sm"><Link className="font-semibold text-primary" href="/emergency-card">{t("ec.title")}</Link> · <Link className="font-semibold text-primary" href="/bathroom">Bathroom</Link></p>
     </main>
   );
 }

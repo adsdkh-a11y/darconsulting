@@ -6,6 +6,7 @@ import { Card, PageHeader, Pill, SectionTitle } from "@/components/ui";
 import { ConsentToggle, DataRights } from "@/components/PrivacyControls";
 import { fmtDay } from "@/lib/dates";
 import type { DictKey } from "@/lib/i18n";
+import { Icon } from "@/components/Icon";
 
 const SHOWN = ["HEALTH_DATA_PROCESSING", "AI_PROCESSING", "DOCUMENT_AI_PROCESSING", "PRODUCT_ANALYTICS"] as const;
 
@@ -26,7 +27,7 @@ export default async function Privacy() {
             label={t(`priv.c.${c}` as DictKey)} description={t(`priv.c.${c}.d` as DictKey)} />
         ))}
         <div className="py-3">
-          <p className="font-semibold">📍 {t("priv.c.LOCATION_ON_REQUEST")}</p>
+          <p className="font-semibold"><Icon name="pin" className="size-4 inline -mt-0.5 me-1.5" />{t("priv.c.LOCATION_ON_REQUEST")}</p>
           <p className="text-sm text-ink-2">{t("priv.c.LOCATION_ON_REQUEST.d")}</p>
         </div>
       </Card>
@@ -39,7 +40,7 @@ export default async function Privacy() {
               <li key={r.id} className="py-2">
                 <span className="font-medium">{r.task.toLowerCase().replace(/_/g, " ")}</span> · {r.provider}/{r.model} · {fmtDay(r.createdAt, locale)}
                 {r.userConfirmed === true && <Pill tone="primary" className="ms-1">✓</Pill>}
-                {r.safetyFlags.length > 0 && <span className="block text-xs text-muted">🛡 {r.safetyFlags.join(", ")}</span>}
+                {r.safetyFlags.length > 0 && <span className="block text-xs text-muted"><Icon name="shield" className="size-3.5 inline -mt-0.5 me-1" />{r.safetyFlags.join(", ")}</span>}
                 <span className="block text-xs text-muted">{JSON.stringify(r.inputScope)}</span>
               </li>
             ))}
