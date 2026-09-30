@@ -175,3 +175,16 @@ describe("validated questionnaires", () => {
     await expect(submitQuestionnaire(u.id, "NOPE", {})).rejects.toThrow();
   });
 });
+
+describe("provenance on merged check-ins", () => {
+  it("keeps every contributing source when logs are merged into one day", async () => {
+    const u = await makeUser();
+    await logSymptoms(u.id, { overall: 5 });
+    const r = await interpretLog(u.id, "3 bowel movements, pain 2/10");
+    await confirmLog(u.id, r.runId, r.parsed);
+    const e = await getEntryForDay(u.id);
+    expect(e?.sourceType).toBe("PATIENT_ENTERED");
+    expect(e?.mergedSources).toEqual([`AI_NATURAL_LANGUAGE:${r.runId}`]);
+    expect(e).toMatchObject({ overall: 5, bowelMovements: 3, pain: 2 });
+  });
+});

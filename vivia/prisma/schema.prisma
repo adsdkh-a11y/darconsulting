@@ -333,6 +333,9 @@ model SymptomEntry {
   extraintestinal    String[]           @default([])
   notes              String?
   rawText            String? // original natural-language text when logged via "Tell VIVIA"
+  /// When a later log from a different source adds to the same day, it is
+  /// recorded here as "SOURCE_TYPE:sourceId" — provenance is never lost.
+  mergedSources      String[]           @default([])
   sourceType         SourceType
   sourceId           String?            @db.Uuid
   verificationStatus VerificationStatus @default(PATIENT_CONFIRMED)

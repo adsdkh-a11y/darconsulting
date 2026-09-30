@@ -1,26 +1,99 @@
 @import "tailwindcss";
 
+/* VIVIA design tokens — calm, warm, human. Not hospital blue. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --font-heading: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --bg: #f6f4ef;
+  --surface: #fffdf9;
+  --surface-2: #efece5;
+  --ink: #1d2729;
+  --ink-2: #4a5759;
+  --muted: #6b7677;
+  --line: #e2ded5;
+  --primary: #2f6f62;
+  --primary-ink: #ffffff;
+  --primary-soft: #dcebe6;
+  --accent: #b8603b;
+  --accent-soft: #f6e3d8;
+  --warn: #8a5a00;
+  --warn-soft: #fbf0d6;
+  --danger: #a33a2b;
+  --chart: #0f8a72;
+  --chart-band: #d9d6ce;
+  --focus: #1b5fd1;
 }
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --bg: #121615;
+    --surface: #1a1f1e;
+    --surface-2: #232a28;
+    --ink: #ecefed;
+    --ink-2: #c3cbc8;
+    --muted: #97a29f;
+    --line: #2e3634;
+    --primary: #7cc4b1;
+    --primary-ink: #0d1a17;
+    --primary-soft: #1f3530;
+    --accent: #e39a78;
+    --accent-soft: #3a2820;
+    --warn: #f0c46a;
+    --warn-soft: #3a3120;
+    --danger: #f08a7a;
+    --chart: #26a88c;
+    --chart-band: #34403d;
+    --focus: #8ab4ff;
+  }
+}
+/* User-selectable high contrast (Profile → Accessibility). */
+:root[data-contrast="high"] {
+  --ink: #000000;
+  --ink-2: #111111;
+  --muted: #2b2b2b;
+  --line: #5a5a5a;
+  --primary: #0b4d40;
+  --accent: #8a3a17;
+}
+@media (prefers-color-scheme: dark) {
+  :root[data-contrast="high"] {
+    --ink: #ffffff; --ink-2: #f2f2f2; --muted: #dddddd; --line: #9a9a9a; --primary: #a6ecd9; --accent: #ffc2a3;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-primary: var(--primary);
+  --color-primary-ink: var(--primary-ink);
+  --color-primary-soft: var(--primary-soft);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-danger: var(--danger);
+  --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-heading), ui-serif, Georgia, serif;
 }
+
+html { -webkit-text-size-adjust: 100%; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.5;
+}
+:root[data-text="large"] body { font-size: 20px; }
+
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; border-radius: 8px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+.tap { min-height: 48px; min-width: 48px; }

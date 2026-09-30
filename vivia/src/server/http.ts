@@ -1,6 +1,6 @@
 import "server-only";
 import { NextResponse, type NextRequest } from "next/server";
-import { ZodError, type ZodSchema } from "zod";
+import { ZodError, type ZodTypeAny, type z } from "zod";
 import { currentUser } from "./session";
 import { HttpError, unauthorized, forbidden } from "./errors";
 
@@ -43,7 +43,7 @@ export function withUser<P = Record<string, string>>(
   };
 }
 
-export async function body<T>(req: NextRequest, schema: ZodSchema<T>): Promise<T> {
+export async function body<S extends ZodTypeAny>(req: NextRequest, schema: S): Promise<z.infer<S>> {
   const json = await req.json().catch(() => ({}));
   return schema.parse(json);
 }

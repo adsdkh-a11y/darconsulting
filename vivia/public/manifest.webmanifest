@@ -1,0 +1,14 @@
+{
+  "name": "VIVIA — Your IBD health hub",
+  "short_name": "VIVIA",
+  "start_url": "/home",
+  "display": "standalone",
+  "background_color": "#f6f4ef",
+  "theme_color": "#2f6f62",
+  "icons": [{ "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }],
+  "shortcuts": [
+    { "name": "Find a bathroom", "url": "/bathroom" },
+    { "name": "Quick check-in", "url": "/log" },
+    { "name": "Emergency card", "url": "/card" }
+  ]
+}

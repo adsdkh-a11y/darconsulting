@@ -34,6 +34,7 @@ export function validateUpload(buf: Buffer): { ok: true; file: ValidatedFile } |
 }
 
 /** Hook for an antivirus engine. The MVP relies on the structural checks above. */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function scanForMalware(_buf: Buffer): { clean: boolean } {
   return { clean: true };
 }

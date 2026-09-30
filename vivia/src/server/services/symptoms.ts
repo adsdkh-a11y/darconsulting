@@ -32,8 +32,10 @@ export async function logSymptoms(
           ...data,
           notes: input.notes && existing.notes ? `${existing.notes}\n${input.notes}` : (data.notes as string | undefined),
           recordedAt: new Date(),
-          // A later AI-parsed addition does not downgrade provenance of a manual entry.
-          ...(existing.sourceType === "PATIENT_ENTERED" ? {} : { sourceType: source.sourceType, sourceId: source.sourceId }),
+          // The original provenance stays; any different contributing source is appended.
+          ...(existing.sourceType !== source.sourceType || existing.sourceId !== (source.sourceId ?? null)
+            ? { mergedSources: { push: `${source.sourceType}:${source.sourceId ?? ""}` } }
+            : {}),
         },
       })
     : await prisma.symptomEntry.create({

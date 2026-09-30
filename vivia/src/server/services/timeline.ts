@@ -17,6 +17,8 @@ export type TimelineItem = {
   detail?: string;
   href?: string;
   source?: SourceType;
+  /** Other sources that contributed to the same record (e.g. a Tell VIVIA addition). */
+  extraSources?: SourceType[];
   verification?: VerificationStatus;
 };
 
@@ -46,7 +48,7 @@ export async function buildTimeline(userId: string, opts: { from?: Date; to?: Da
       s.fatigue != null ? `fatigue ${s.fatigue}/10` : null,
       s.urgency ? "urgency" : null,
     ].filter(Boolean);
-    items.push({ id: s.id, kind: "symptoms", at: s.date.toISOString(), day: dateToDay(s.date), title: "Check-in", detail: bits.join(" · ") || undefined, source: s.sourceType, verification: s.verificationStatus });
+    items.push({ id: s.id, kind: "symptoms", at: s.date.toISOString(), day: dateToDay(s.date), title: "Check-in", detail: bits.join(" · ") || undefined, source: s.sourceType, extraSources: [...new Set(s.mergedSources.map((m) => m.split(":")[0] as SourceType))].filter((x) => x !== s.sourceType), verification: s.verificationStatus });
   }
   for (const e of medEvents) {
     items.push({ id: e.id, kind: "medication", at: e.occurredAt.toISOString(), day: dateToDay(e.occurredAt), title: `${e.medication.name}: ${e.status.toLowerCase().replace("_", " ")}`, detail: e.reason ?? undefined, href: `/medications/${e.medicationId}`, source: e.sourceType });
