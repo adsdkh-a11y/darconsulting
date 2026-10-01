@@ -41,6 +41,10 @@ Privacy (off by default).
 `MAP_EXTERNAL_PROVIDER=overpass` imports public toilets/pharmacies/hospitals from OpenStreetMap when the
 local database has few results near a search. `STORAGE_DIR` sets where encrypted documents are stored.
 
+## Deploy
+
+See [`../docs/DEPLOYMENT.md`](../docs/DEPLOYMENT.md): Dockerfile, Render blueprint (`../render.yaml`), health check at `/api/health`.
+
 ## Scripts
 
 | Command | What |

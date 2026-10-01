@@ -31,6 +31,7 @@ essentials) · doctor-portal-ready data model.
 | P2 | Travel mode: saved destinations, offline map packs, translated "can't wait" cards per country |
 | P2 | Community (moderation, anonymity, misinformation controls) — only after trust & safety design |
 | P2 | Wearables; healthcare integrations (FHIR) |
+| Ops | First deployment: verify the Docker image and `render.yaml` on Render (prepared, untested); S3 storage driver for hosts without a disk |
 | Ops | Production hardening list in SECURITY.md; DPIA, DPA/SCCs, clinical review (COMPLIANCE.md) |
 | Ops | Privacy-first analytics for the success metrics in PRODUCT.md |
 
