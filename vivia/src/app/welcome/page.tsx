@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getT } from "@/server/locale";
+import { Logo } from "@/components/Logo";
 import { ButtonLink } from "@/components/ui";
 import { LanguagePicker } from "@/components/LanguagePicker";
 import { Icon } from "@/components/Icon";
@@ -10,7 +11,7 @@ export default async function Welcome() {
   return (
     <main className="mx-auto flex min-h-dvh max-w-md flex-col px-5 pb-8 pt-6">
       <div className="flex items-center justify-between">
-        <span className="font-display text-2xl font-semibold text-primary">VIVIA</span>
+        <span className="text-primary"><Logo size="md" tag /></span>
         <LanguagePicker current={locale} />
       </div>
       <div className="mt-10 flex-1">
