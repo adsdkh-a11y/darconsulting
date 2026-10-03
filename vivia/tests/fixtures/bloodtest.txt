@@ -1,0 +1,8 @@
+LABORATORIO ANALISI DEMO
+Referto di laboratorio
+Data del prelievo: 03/09/2026
+PCR (proteina C reattiva) 12.4 mg/L (v.n. < 5)
+Emoglobina 11,8 g/dL (12.0 - 15.5)
+Ferritina 18 ng/mL
+Piastrine 410 x10^9/L
+Calprotectina fecale 320 µg/g

@@ -1,0 +1,796 @@
+// VIVIA — IBD Personal Health Hub
+// Data model. See /docs/DATABASE.md for rationale.
+//
+// Conventions
+// - UUID primary keys everywhere.
+// - Every patient-owned row carries `userId` and is ONLY ever queried with a
+//   `userId` filter (enforced in the service layer, verified by tests).
+// - Every medical entity carries provenance: `sourceType`, `sourceId`,
+//   `verificationStatus`, `createdAt`, `updatedAt`.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─────────────────────────────── Enums ───────────────────────────────
+
+enum SourceType {
+  PATIENT_ENTERED
+  DOCUMENT_EXTRACTION
+  AI_NATURAL_LANGUAGE
+  DEVICE_IMPORT
+  DOCTOR_ENTERED
+  DEMO
+}
+
+enum VerificationStatus {
+  UNVERIFIED
+  PATIENT_CONFIRMED
+  NEEDS_DOCTOR_CONFIRMATION
+  REJECTED
+}
+
+enum DiseaseType {
+  CROHNS
+  ULCERATIVE_COLITIS
+  IBD_UNCLASSIFIED
+  OTHER
+  UNKNOWN
+}
+
+enum MedicationRoute {
+  ORAL
+  SUBCUTANEOUS
+  INTRAVENOUS
+  RECTAL
+  TOPICAL
+  OTHER
+}
+
+enum MedicationForm {
+  TABLET
+  CAPSULE
+  INJECTION
+  INFUSION
+  ENEMA
+  SUPPOSITORY
+  CREAM
+  FOAM
+  LIQUID
+  OTHER
+}
+
+enum MedicationEventStatus {
+  TAKEN
+  SKIPPED
+  DELAYED
+  NOT_APPLICABLE
+}
+
+enum DocumentType {
+  COLONOSCOPY
+  HISTOLOGY
+  MRI
+  CT
+  ULTRASOUND
+  BLOOD_TEST
+  CALPROTECTIN
+  PRESCRIPTION
+  SPECIALIST_REPORT
+  DISCHARGE_LETTER
+  SURGERY_REPORT
+  OTHER
+  UNKNOWN
+}
+
+enum DocumentStatus {
+  UPLOADED
+  PROCESSING
+  NEEDS_REVIEW
+  REVIEWED
+  FAILED
+}
+
+enum ExtractionFieldStatus {
+  PENDING
+  CONFIRMED
+  EDITED
+  REJECTED
+}
+
+enum ProcedureType {
+  COLONOSCOPY
+  ILEOCOLONOSCOPY
+  SIGMOIDOSCOPY
+  GASTROSCOPY
+  MRI
+  CT
+  ULTRASOUND
+  CAPSULE_ENDOSCOPY
+  SURGERY
+  OTHER
+}
+
+enum ClinicalEventType {
+  HOSPITALIZATION
+  URGENT_VISIT
+  EMERGENCY_ROOM
+  MAJOR_SYMPTOM_EVENT
+  DIAGNOSIS
+  SURGERY
+  STOMA_CREATED
+  STOMA_REVERSED
+  OTHER
+}
+
+enum LocationCategory {
+  BATHROOM
+  PHARMACY
+  HOSPITAL
+  IBD_CENTER
+  AIRPORT
+  STATION
+  HOTEL
+  IBD_FRIENDLY_PLACE
+}
+
+enum LocationVerificationType {
+  MAP_PROVIDER
+  USER_REPORTED
+  VIVIA_VERIFIED
+  PARTNER_VERIFIED
+}
+
+enum ConsentType {
+  TERMS_OF_SERVICE
+  HEALTH_DATA_PROCESSING
+  AI_PROCESSING
+  DOCUMENT_AI_PROCESSING
+  LOCATION_ON_REQUEST
+  PRODUCT_ANALYTICS
+}
+
+enum ConflictStatus {
+  OPEN
+  RESOLVED_KEEP_EXISTING
+  RESOLVED_KEEP_NEW
+  NEEDS_DOCTOR_CONFIRMATION
+}
+
+enum AiTask {
+  DOCUMENT_EXTRACTION
+  NATURAL_LANGUAGE_LOG
+  VISIT_SUMMARY
+  QUESTION_GENERATION
+  EXPLAIN_TERM
+  TREND_EXPLANATION
+}
+
+// ─────────────────────────────── Identity & auth ───────────────────────────────
+
+model User {
+  id           String   @id @default(uuid()) @db.Uuid
+  email        String   @unique
+  passwordHash String
+  locale       String   @default("en")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  sessions        Session[]
+  profile         PatientProfile?
+  diagnoses       Diagnosis[]
+  medications     Medication[]
+  medicationEvts  MedicationEvent[]
+  symptomEntries  SymptomEntry[]
+  foodEntries     FoodEntry[]
+  labResults      LabResult[]
+  documents       MedicalDocument[]
+  procedures      Procedure[]
+  clinicalEvents  ClinicalEvent[]
+  doctors         Doctor[]
+  visits          DoctorVisit[]
+  metrics         HealthMetric[]
+  questionnaires  QuestionnaireResponse[]
+  consents        Consent[]
+  auditLogs       AuditLog[]
+  aiRuns          AiRun[]
+  conflicts       DataConflict[]
+  shareLinks      ShareLink[]
+  locationReviews LocationReview[]
+  locationReports LocationReport[]
+  notifications   Notification[]
+  emergencyCard   EmergencyCard?
+}
+
+model Session {
+  id         String   @id @default(uuid()) @db.Uuid
+  userId     String   @db.Uuid
+  tokenHash  String   @unique
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  lastSeenAt DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+// ─────────────────────────────── Health Memory: identity & disease ───────────────────────────────
+
+model PatientProfile {
+  id                   String    @id @default(uuid()) @db.Uuid
+  userId               String    @unique @db.Uuid
+  displayName          String
+  birthYear            Int?
+  hasStoma             Boolean?
+  stomaType            String? // ileostomy / colostomy / other — patient entered
+  onboardingCompleted  Boolean   @default(false)
+  trackedSymptoms      String[]  @default(["bowelMovements", "stoolConsistency", "blood", "urgency", "pain", "fatigue"])
+  country              String?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+  user                 User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Diagnosis {
+  id                 String             @id @default(uuid()) @db.Uuid
+  userId             String             @db.Uuid
+  disease            DiseaseType
+  location           String? // e.g. "terminal ileum" as patient/document states it
+  diagnosedAt        DateTime?
+  notes              String?
+  sourceType         SourceType
+  sourceId           String?            @db.Uuid
+  verificationStatus VerificationStatus @default(PATIENT_CONFIRMED)
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  user               User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+// ─────────────────────────────── Treatment ───────────────────────────────
+
+model Medication {
+  id                 String             @id @default(uuid()) @db.Uuid
+  userId             String             @db.Uuid
+  name               String
+  activeIngredient   String?
+  dose               Float?
+  unit               String?
+  route              MedicationRoute
+  form               MedicationForm
+  // Schedule: expressed as "every N days" (1 = daily, 7 = weekly, 14 = every other week, ...)
+  // with optional times per day. PRN = as needed. Kept deliberately generic.
+  intervalDays       Int?
+  timesPerDay        Int?
+  asNeeded           Boolean            @default(false)
+  scheduleNote       String?
+  startDate          DateTime?
+  endDate            DateTime?
+  prescribingDoctor  String?
+  notes              String?
+  active             Boolean            @default(true)
+  sourceType         SourceType
+  sourceId           String?            @db.Uuid
+  verificationStatus VerificationStatus @default(PATIENT_CONFIRMED)
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  user               User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  events             MedicationEvent[]
+
+  @@index([userId])
+}
+
+model MedicationEvent {
+  id                 String                @id @default(uuid()) @db.Uuid
+  userId             String                @db.Uuid
+  medicationId       String                @db.Uuid
+  status             MedicationEventStatus
+  occurredAt         DateTime
+  reason             String?
+  notes              String?
+  sourceType         SourceType            @default(PATIENT_ENTERED)
+  sourceId           String?               @db.Uuid
+  verificationStatus VerificationStatus    @default(PATIENT_CONFIRMED)
+  createdAt          DateTime              @default(now())
+  updatedAt          DateTime              @updatedAt
+  user               User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  medication         Medication            @relation(fields: [medicationId], references: [id], onDelete: Cascade)
+
+  @@index([userId, occurredAt])
+}
+
+// ─────────────────────────────── Symptoms & daily data ───────────────────────────────
+
+/// One check-in. Most fields optional: progressive disclosure means a "good day"
+/// can be a single tap (`overall` only).
+model SymptomEntry {
+  id                 String             @id @default(uuid()) @db.Uuid
+  userId             String             @db.Uuid
+  date               DateTime           @db.Date
+  recordedAt         DateTime           @default(now())
+  overall            Int? // 1 (very bad) .. 5 (very good)
+  bowelMovements     Int?
+  nightBowelMovements Int?
+  stoolConsistency   Int? // Bristol-like 1..7
+  liquidStools       Int?
+  blood              Int? // 0 none, 1 streaks, 2 obvious, 3 mostly blood
+  urgency            Int? // 0..3
+  pain               Int? // 0..10
+  fatigue            Int? // 0..10
+  bloating           Int?
+  nausea             Int?
+  appetite           Int?
+  sleepQuality       Int?
+  stress             Int?
+  mood               Int?
+  stomaOutput        String?
+  extraintestinal    String[]           @default([])
+  notes              String?
+  rawText            String? // original natural-language text when logged via "Tell VIVIA"
+  /// When a later log from a different source adds to the same day, it is
+  /// recorded here as "SOURCE_TYPE:sourceId" — provenance is never lost.
+  mergedSources      String[]           @default([])
+  sourceType         SourceType
+  sourceId           String?            @db.Uuid
+  verificationStatus VerificationStatus @default(PATIENT_CONFIRMED)
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  user               User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bowelMovementsDetail BowelMovement[]
+
+  @@index([userId, date])
+}
+
+model BowelMovement {
+  id             String       @id @default(uuid()) @db.Uuid
+  symptomEntryId String       @db.Uuid
+  occurredAt     DateTime?
+  consistency    Int?
+  blood          Boolean?
+  urgency        Boolean?
+  entry          SymptomEntry @relation(fields: [symptomEntryId], references: [id], onDelete: Cascade)
+}
+
+model FoodEntry {
+  id                 String             @id @default(uuid()) @db.Uuid
+  userId             String             @db.Uuid
+  occurredAt         DateTime
+  mealCategory       String? // breakfast / lunch / dinner / snack
+  description        String
+  reaction           String?
+  notes              String?
+  sourceType         SourceType
+  sourceId           String?            @db.Uuid
+  verificationStatus VerificationStatus @default(PATIENT_CONFIRMED)
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  user               User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, occurredAt])
+}
+
+/// Weight, temperature, sleep hours, steps... (also the landing zone for
+/// Apple Health / Health Connect imports: sourceType = DEVICE_IMPORT).
+model HealthMetric {
+  id                 String             @id @default(uuid()) @db.Uuid
+  userId             String             @db.Uuid
+  kind               String // weight_kg, temperature_c, sleep_hours, ...
+  value              Float
+  unit               String
+  measuredAt         DateTime
+  sourceType         SourceType
+  sourceId           String?            @db.Uuid
+  verificationStatus VerificationStatus @default(PATIENT_CONFIRMED)
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  user               User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, kind, measuredAt])
+}
+
+model QuestionnaireResponse {
+  id                 String             @id @default(uuid()) @db.Uuid
+  userId             String             @db.Uuid
+  instrument         String // "HBI" | "SCCAI" | ...
+  instrumentVersion  String
+  completedAt        DateTime
+  answers            Json
+  score              Float?
+  sourceType         SourceType         @default(PATIENT_ENTERED)
+  sourceId           String?            @db.Uuid
+  verificationStatus VerificationStatus @default(PATIENT_CONFIRMED)
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  user               User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, instrument, completedAt])
+}
+
+// ─────────────────────────────── Objective data ───────────────────────────────
+
+model LabResult {
+  id                 String             @id @default(uuid()) @db.Uuid
+  userId             String             @db.Uuid
+  testCode           String // normalized: CRP, CALPROTECTIN, HB, FERRITIN, WBC, PLT, ...
+  testName           String // as written in the source
+  value              Float?
+  valueText          String? // for non-numeric values ("<30")
+  unit               String?
+  referenceRange     String?
+  takenAt            DateTime
+  sourceType         SourceType
+  sourceId           String?            @db.Uuid
+  verificationStatus VerificationStatus @default(PATIENT_CONFIRMED)
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  user               User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, testCode, takenAt])
+}
+
+model Procedure {
+  id                 String             @id @default(uuid()) @db.Uuid
+  userId             String             @db.Uuid
+  type               ProcedureType
+  performedAt        DateTime
+  facility           String?
+  findings           String? // verbatim "the report states" text
+  biopsyTaken        Boolean?
+  notes              String?
+  sourceType         SourceType
+  sourceId           String?            @db.Uuid
+  verificationStatus VerificationStatus @default(PATIENT_CONFIRMED)
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  user               User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, performedAt])
+}
+
+model ClinicalEvent {
+  id                 String             @id @default(uuid()) @db.Uuid
+  userId             String             @db.Uuid
+  type               ClinicalEventType
+  startedAt          DateTime
+  endedAt            DateTime?
+  title              String
+  description        String?
+  facility           String?
+  sourceType         SourceType
+  sourceId           String?            @db.Uuid
+  verificationStatus VerificationStatus @default(PATIENT_CONFIRMED)
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  user               User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, startedAt])
+}
+
+// ─────────────────────────────── Documents ───────────────────────────────
+
+model MedicalDocument {
+  id              String         @id @default(uuid()) @db.Uuid
+  userId          String         @db.Uuid
+  title           String
+  fileName        String
+  mimeType        String
+  sizeBytes       Int
+  sha256          String
+  storageKey      String // encrypted blob key in the storage provider
+  type            DocumentType   @default(UNKNOWN)
+  documentDate    DateTime?
+  status          DocumentStatus @default(UPLOADED)
+  extractedText   String? // OCR / text layer, encrypted-at-rest by infra
+  failureReason   String?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  user            User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  extractions     DocumentExtraction[]
+
+  @@index([userId, createdAt])
+}
+
+model DocumentExtraction {
+  id             String            @id @default(uuid()) @db.Uuid
+  documentId     String            @db.Uuid
+  aiRunId        String?           @db.Uuid
+  classification DocumentType
+  classificationConfidence Float
+  summary        String? // "What your document says" — strict, verbatim-anchored
+  createdAt      DateTime          @default(now())
+  document       MedicalDocument   @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  fields         ExtractedField[]
+}
+
+/// Every extracted value: value + source + confidence + confirmation status.
+/// Nothing reaches the Health Memory until status is CONFIRMED/EDITED.
+model ExtractedField {
+  id             String                @id @default(uuid()) @db.Uuid
+  extractionId   String                @db.Uuid
+  kind           String // lab | procedure | medication | diagnosis | date | finding | recommendation
+  key            String // CRP, procedure_date, medication_name, ...
+  label          String
+  value          String
+  unit           String?
+  numericValue   Float?
+  observedAt     DateTime?
+  sourceSnippet  String? // exact text the value came from
+  confidence     Float
+  status         ExtractionFieldStatus @default(PENDING)
+  editedValue    String?
+  appliedEntity  String? // e.g. "LabResult:<uuid>" once written to Health Memory
+  createdAt      DateTime              @default(now())
+  updatedAt      DateTime              @updatedAt
+  extraction     DocumentExtraction    @relation(fields: [extractionId], references: [id], onDelete: Cascade)
+}
+
+// ─────────────────────────────── Care team ───────────────────────────────
+
+model HealthcareOrganization {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String
+  city      String?
+  country   String?
+  kind      String? // hospital / clinic / ibd_center
+  createdAt DateTime @default(now())
+  doctors   Doctor[]
+}
+
+model Doctor {
+  id             String                  @id @default(uuid()) @db.Uuid
+  userId         String                  @db.Uuid
+  name           String
+  specialty      String?
+  phone          String?
+  email          String?
+  organizationId String?                 @db.Uuid
+  createdAt      DateTime                @default(now())
+  updatedAt      DateTime                @updatedAt
+  user           User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organization   HealthcareOrganization? @relation(fields: [organizationId], references: [id])
+  visits         DoctorVisit[]
+
+  @@index([userId])
+}
+
+model DoctorVisit {
+  id          String         @id @default(uuid()) @db.Uuid
+  userId      String         @db.Uuid
+  doctorId    String?        @db.Uuid
+  scheduledAt DateTime
+  reason      String?
+  patientConcerns String?
+  completed   Boolean        @default(false)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  doctor      Doctor?        @relation(fields: [doctorId], references: [id], onDelete: SetNull)
+  summaries   VisitSummary[]
+
+  @@index([userId, scheduledAt])
+}
+
+/// A generated "VIVIA Care Summary". Content is a JSON snapshot so that what
+/// the patient shared is exactly reproducible later (auditability).
+model VisitSummary {
+  id               String      @id @default(uuid()) @db.Uuid
+  userId           String      @db.Uuid
+  visitId          String?     @db.Uuid
+  periodStart      DateTime
+  periodEnd        DateTime
+  includedSections String[]
+  content          Json
+  aiRunId          String?     @db.Uuid
+  patientConfirmed Boolean     @default(false)
+  createdAt        DateTime    @default(now())
+  visit            DoctorVisit? @relation(fields: [visitId], references: [id], onDelete: SetNull)
+  shareLinks       ShareLink[]
+
+  @@index([userId, createdAt])
+}
+
+/// Patient-controlled sharing. Only a hash of the token is stored.
+/// Future doctor-portal access grants reuse this model (grantee = doctor account).
+model ShareLink {
+  id            String       @id @default(uuid()) @db.Uuid
+  userId        String       @db.Uuid
+  summaryId     String       @db.Uuid
+  tokenHash     String       @unique
+  expiresAt     DateTime
+  revokedAt     DateTime?
+  accessCount   Int          @default(0)
+  lastAccessAt  DateTime?
+  createdAt     DateTime     @default(now())
+  user          User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  summary       VisitSummary @relation(fields: [summaryId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+// ─────────────────────────────── Integrity ───────────────────────────────
+
+/// "VIVIA found different information. Which one should be kept?"
+model DataConflict {
+  id            String         @id @default(uuid()) @db.Uuid
+  userId        String         @db.Uuid
+  entityType    String // Medication | LabResult | Diagnosis
+  existingId    String         @db.Uuid
+  field         String
+  existingValue String
+  newValue      String
+  newSourceType SourceType
+  newSourceId   String?        @db.Uuid
+  proposed      Json // full proposed record, applied only if patient keeps the new value
+  status        ConflictStatus @default(OPEN)
+  resolvedAt    DateTime?
+  createdAt     DateTime       @default(now())
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, status])
+}
+
+/// AI auditability: model, timestamp, input scope, output, confirmation, sources.
+model AiRun {
+  id              String   @id @default(uuid()) @db.Uuid
+  userId          String   @db.Uuid
+  task            AiTask
+  provider        String
+  model           String
+  inputScope      Json // which data categories + date range were sent
+  sourceRefs      String[] // entity refs the output was based on
+  output          Json
+  safetyFlags     String[] @default([])
+  userConfirmed   Boolean?
+  confirmedAt     DateTime?
+  createdAt       DateTime @default(now())
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+}
+
+// ─────────────────────────────── Life map ───────────────────────────────
+
+model Location {
+  id               String                   @id @default(uuid()) @db.Uuid
+  name             String
+  category         LocationCategory
+  latitude         Float
+  longitude        Float
+  address          String?
+  city             String?
+  country          String?
+  openingHours     String? // human readable
+  open24h          Boolean                  @default(false)
+  // Structured weekly hours: [{d:0-6, open:"08:00", close:"20:00"}]
+  hoursJson        Json?
+  accessible       Boolean?
+  free             Boolean?
+  source           String // "vivia_seed", "osm", "user", partner name...
+  externalId       String?
+  verificationType LocationVerificationType
+  lastVerifiedAt   DateTime?
+  createdAt        DateTime                 @default(now())
+  updatedAt        DateTime                 @updatedAt
+  features         LocationFeature[]
+  reviews          LocationReview[]
+  reports          LocationReport[]
+
+  @@index([category])
+  @@index([latitude, longitude])
+}
+
+/// Stoma-relevant features, each with its own verification level.
+/// status: VERIFIED | COMMUNITY_REPORTED | UNVERIFIED
+model LocationFeature {
+  id         String   @id @default(uuid()) @db.Uuid
+  locationId String   @db.Uuid
+  feature    String // accessible, private, large_space, sink, disposal_bin, changing_area, open_24_7, radar_key
+  status     String
+  reportedBy Int      @default(1)
+  updatedAt  DateTime @updatedAt
+  location   Location @relation(fields: [locationId], references: [id], onDelete: Cascade)
+
+  @@unique([locationId, feature])
+}
+
+model LocationReview {
+  id           String   @id @default(uuid()) @db.Uuid
+  locationId   String   @db.Uuid
+  userId       String   @db.Uuid
+  reliability  Int // 1..5 "was it there and open?"
+  cleanliness  Int?
+  comment      String?
+  features     String[] @default([]) // features this reviewer confirms
+  createdAt    DateTime @default(now())
+  location     Location @relation(fields: [locationId], references: [id], onDelete: Cascade)
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([locationId, userId])
+}
+
+/// "Report incorrect information."
+model LocationReport {
+  id         String   @id @default(uuid()) @db.Uuid
+  locationId String   @db.Uuid
+  userId     String   @db.Uuid
+  issue      String // closed_permanently | wrong_hours | not_accessible | wrong_location | other
+  details    String?
+  resolved   Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  location   Location @relation(fields: [locationId], references: [id], onDelete: Cascade)
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// ─────────────────────────────── Privacy & ops ───────────────────────────────
+
+model Consent {
+  id        String      @id @default(uuid()) @db.Uuid
+  userId    String      @db.Uuid
+  type      ConsentType
+  granted   Boolean
+  version   String
+  createdAt DateTime    @default(now())
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, type, createdAt])
+}
+
+/// Audit log. Audit entries are personal data too: they are deleted with the
+/// account, and a minimal non-identifying record is written to `DeletionRecord`.
+model AuditLog {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid
+  action    String // e.g. document.upload, summary.share, export.download
+  entity    String?
+  entityId  String?
+  metadata  Json?
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+}
+
+model DeletionRecord {
+  id          String   @id @default(uuid()) @db.Uuid
+  userIdHash  String
+  deletedAt   DateTime @default(now())
+  reason      String?
+}
+
+model Notification {
+  id        String    @id @default(uuid()) @db.Uuid
+  userId    String    @db.Uuid
+  kind      String // medication_reminder | visit_reminder | doctor_request (future)
+  title     String
+  body      String?
+  dueAt     DateTime
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, dueAt])
+}
+
+model EmergencyCard {
+  id               String   @id @default(uuid()) @db.Uuid
+  userId           String   @unique @db.Uuid
+  showCondition    Boolean  @default(true)
+  showMedications  Boolean  @default(true)
+  showAllergies    Boolean  @default(true)
+  showSurgeries    Boolean  @default(true)
+  showStoma        Boolean  @default(true)
+  showContact      Boolean  @default(true)
+  allergies        String?
+  surgeriesNote    String?
+  contactName      String?
+  contactPhone     String?
+  extraNote        String?
+  updatedAt        DateTime @updatedAt
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}

@@ -1,0 +1,13 @@
+OSPEDALE DEMO — Endoscopy Unit
+ILEOCOLONOSCOPY REPORT
+Date: 12/06/2026
+Patient: Anna Rossi
+Indication: Crohn's disease follow-up
+Findings:
+Mild erythema and a few aphthous ulcers in the terminal ileum.
+Colon and rectum with normal mucosa.
+Biopsies taken from the terminal ileum and colon.
+Conclusion:
+Mild ileal activity. SES-CD 4.
+Recommendations:
+Continue current therapy. Repeat fecal calprotectin in 3 months.
