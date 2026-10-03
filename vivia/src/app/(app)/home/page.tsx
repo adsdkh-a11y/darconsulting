@@ -28,7 +28,7 @@ export default async function Home() {
   const user = await requirePageUser();
   const { t, locale } = await getT();
   const today = todayDay();
-  const [profile, entry, meds, changes, visit, conflicts, pendingDocs, entryCount, docCount] = await Promise.all([
+  const [, entry, meds, changes, visit, conflicts, pendingDocs, entryCount, docCount] = await Promise.all([
     getProfile(user.id),
     getEntryForDay(user.id, today),
     medicationOverview(user.id),
@@ -40,8 +40,6 @@ export default async function Home() {
     prisma.medicalDocument.count({ where: { userId: user.id } }),
   ]);
   const sparks = await Promise.all(changes.map((c) => series(user.id, c.metric as BaselineMetric, 13, today)));
-  const hour = Number(new Intl.DateTimeFormat("en-GB", { hour: "numeric", hour12: false, timeZone: "Europe/Rome" }).format(new Date()));
-  const greeting = hour < 12 ? t("home.morning") : hour < 18 ? t("home.afternoon") : t("home.evening");
   const zero = entryCount === 0 && meds.length === 0 && docCount === 0;
   const nextMed = meds.filter((m) => m.nextDue).sort((a, b) => a.nextDue!.getTime() - b.nextDue!.getTime())[0];
   const dateLabel = new Intl.DateTimeFormat(locale, { weekday: "long", day: "numeric", month: "long", timeZone: "Europe/Rome" }).format(new Date());
@@ -59,7 +57,6 @@ export default async function Home() {
       <section className="hero-card rise relative mt-2 overflow-hidden rounded-[32px] px-5 pb-5 pt-[22px]" style={{ ["--i" as string]: 0 }}>
         <MoodHero dateLabel={dateLabel} doneToday={!!entry?.overall} />
       </section>
-      <p className="mt-2 text-center text-xs text-muted">{greeting}, {profile?.displayName}</p>
 
       {(conflicts > 0 || pendingDocs > 0) && (
         <div className="rise mt-3 space-y-2" style={{ ["--i" as string]: 1 }}>

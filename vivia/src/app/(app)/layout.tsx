@@ -1,5 +1,4 @@
 import { Logo } from "@/components/Logo";
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { requirePageUser } from "@/server/session";
 import { getProfile } from "@/server/services/profile";
@@ -12,14 +11,18 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   const profile = await getProfile(user.id);
   if (!profile?.onboardingCompleted) redirect("/onboarding");
   const { t } = await getT();
+  const hour = Number(new Intl.DateTimeFormat("en-GB", { hour: "numeric", hour12: false, timeZone: "Europe/Rome" }).format(new Date()));
+  const greeting = hour < 12 ? t("home.morning") : hour < 18 ? t("home.afternoon") : t("home.evening");
   return (
     <div className="mx-auto min-h-dvh max-w-md px-4 pb-32">
       <div className="sticky top-0 z-20 -mx-4 flex items-center justify-between bg-gradient-to-b from-bg from-70% to-transparent px-4 pb-2 pt-3">
-        <Link href="/me" className="flex items-center gap-3" aria-label={t("prof.title")}>
-          <span className="grid size-11 place-items-center rounded-full bg-gradient-to-br from-primary to-[#7a52e0] text-lg font-extrabold text-primary-ink">{profile.displayName.charAt(0).toUpperCase()}</span>
-          <span className="text-ink"><Logo size="sm" /></span>
-        </Link>
-        <BathroomButton label={t("nav.bathroom")} />
+        <div className="min-w-0">
+          <span className="text-ink"><Logo size="sm" left /></span>
+          <p className="mt-0.5 truncate text-sm font-semibold text-muted">{greeting}, {profile.displayName}</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <BathroomButton label={t("nav.bathroom")} />
+        </div>
       </div>
       <main id="main">{children}</main>
       <BottomNav />
