@@ -562,4 +562,5 @@ export const it: Partial<Record<DictKey, string>> = {
   "travel.soon": "In arrivo altre funzioni di viaggio: destinazioni salvate e mappe offline.",
 
   "err.unauthorized": "Accedi di nuovo.",
+  "map.distance": "{d}",
 };
