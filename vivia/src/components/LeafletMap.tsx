@@ -13,7 +13,7 @@ export default function LeafletMap({ center, places, located }: { center: { lat:
         {located && <CircleMarker center={[center.lat, center.lng]} radius={8} pathOptions={{ color: "#fff", weight: 2, fillColor: "#1b5fd1", fillOpacity: 1 }} />}
         {places.map((p) => (
           <CircleMarker key={p.id} center={[p.latitude, p.longitude]} radius={9}
-            pathOptions={{ color: "#fff", weight: 2, fillColor: p.openNow === false ? "#8a8f8e" : "#0f8a72", fillOpacity: 1 }}>
+            pathOptions={{ color: "#fff", weight: 2, fillColor: p.openNow === false ? "#8a8f8e" : "#6a3fc9", fillOpacity: 1 }}>
             <Popup><Link href={`/map/${p.id}`}>{p.name}</Link><br />{p.walkMinutes} min</Popup>
           </CircleMarker>
         ))}

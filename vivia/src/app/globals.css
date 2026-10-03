@@ -1,66 +1,66 @@
 @import "tailwindcss";
 
 /* VIVIA design tokens — calm, warm, human. Not hospital blue. */
-/* VIVIA design system — dark-first, fintech-grade. One mint accent, coral reserved for urgency.
-   Validated chart greens: #26A88C on dark surfaces, #0F8A72 on light. */
+/* VIVIA design system — dark-first, fintech-grade. One violet accent, coral reserved for urgency.
+   Chart violets: #8c6ee6 on dark surfaces, #6a3fc9 on light. */
 :root {
   --font-heading: "Manrope Variable", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-body: "Manrope Variable", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --bg: #070c0b;
-  --surface: #121c1a;
-  --surface-2: #192624;
-  --ink: #f1f6f4;
-  --ink-2: #b5c3bf;
-  --muted: #7f908b;
+  --bg: #0a0912;
+  --surface: #14111f;
+  --surface-2: #1d1930;
+  --ink: #f3f1fa;
+  --ink-2: #bdb8d0;
+  --muted: #8d88a3;
   --line: rgba(255, 255, 255, 0.08);
-  --primary: #5cf2c5;
-  --primary-ink: #04201a;
-  --primary-soft: rgba(92, 242, 197, 0.14);
+  --primary: #b69cff;
+  --primary-ink: #1b0c42;
+  --primary-soft: rgba(182, 156, 255, 0.14);
   --accent: #ff7b5c;
   --accent-ink: #2a0d05;
   --accent-soft: rgba(255, 123, 92, 0.16);
   --warn: #ffc857;
   --warn-soft: rgba(255, 200, 87, 0.14);
   --danger: #ff8a7a;
-  --chart: #26a88c;
+  --chart: #8c6ee6;
   --chart-band: rgba(255, 255, 255, 0.07);
-  --glass: rgba(18, 28, 26, 0.74);
+  --glass: rgba(20, 17, 31, 0.74);
   --shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
-  --hero-a: #13372f;
-  --hero-b: #0b1f1b;
+  --hero-a: #2b1b5c;
+  --hero-b: #150d33;
   --focus: #8ab4ff;
   color-scheme: dark;
 }
 @media (prefers-color-scheme: light) {
   :root {
-    --bg: #f1f5f4;
+    --bg: #f4f2f9;
     --surface: #ffffff;
-    --surface-2: #e8eeec;
-    --ink: #0a1412;
-    --ink-2: #3c4d49;
-    --muted: #64766f;
-    --line: rgba(10, 20, 18, 0.09);
-    --primary: #0b8f73;
+    --surface-2: #ebe7f4;
+    --ink: #120d22;
+    --ink-2: #463f5c;
+    --muted: #6a6480;
+    --line: rgba(14, 10, 28, 0.09);
+    --primary: #6a3fc9;
     --primary-ink: #ffffff;
-    --primary-soft: rgba(11, 143, 115, 0.11);
+    --primary-soft: rgba(106, 63, 201, 0.11);
     --accent: #e2532f;
     --accent-ink: #ffffff;
     --accent-soft: rgba(226, 83, 47, 0.12);
     --warn: #9a6a00;
     --warn-soft: rgba(154, 106, 0, 0.12);
     --danger: #b3382a;
-    --chart: #0f8a72;
-    --chart-band: rgba(10, 20, 18, 0.06);
+    --chart: #6a3fc9;
+    --chart-band: rgba(14, 10, 28, 0.06);
     --glass: rgba(255, 255, 255, 0.8);
-    --shadow: 0 18px 50px rgba(10, 20, 18, 0.14);
+    --shadow: 0 18px 50px rgba(14, 10, 28, 0.14);
     --focus: #1b5fd1;
     color-scheme: light;
   }
 }
 /* User-selectable high contrast (Profile → Accessibility). */
-:root[data-contrast="high"] { --ink: #ffffff; --ink-2: #f2f2f2; --muted: #dddddd; --line: rgba(255,255,255,.45); --primary: #a6ecd9; --accent: #ffc2a3; }
+:root[data-contrast="high"] { --ink: #ffffff; --ink-2: #f2f2f2; --muted: #dddddd; --line: rgba(255,255,255,.45); --primary: #e0d4ff; --accent: #ffc2a3; }
 @media (prefers-color-scheme: light) {
-  :root[data-contrast="high"] { --ink: #000000; --ink-2: #111111; --muted: #2b2b2b; --line: rgba(0,0,0,.5); --primary: #065343; --accent: #8a2f12; }
+  :root[data-contrast="high"] { --ink: #000000; --ink-2: #111111; --muted: #2b2b2b; --line: rgba(0,0,0,.5); --primary: #3d1f8f; --accent: #8a2f12; }
 }
 
 @theme inline {
@@ -113,14 +113,14 @@ body {
 @keyframes grow { from { transform: scaleY(0); } to { transform: scaleY(1); } }
 @keyframes ringfill { to { stroke-dashoffset: var(--to); } }
 @keyframes wave { 0%, 100% { transform: scaleY(0.25); } 50% { transform: scaleY(1); } }
-@keyframes glow { 0%, 100% { box-shadow: 0 0 0 0 rgba(92,242,197,.45), 0 10px 30px rgba(92,242,197,.25); } 50% { box-shadow: 0 0 0 12px rgba(92,242,197,0), 0 10px 30px rgba(92,242,197,.25); } }
+@keyframes glow { 0%, 100% { box-shadow: 0 0 0 0 rgba(182,156,255,.45), 0 10px 30px rgba(182,156,255,.25); } 50% { box-shadow: 0 0 0 12px rgba(182,156,255,0), 0 10px 30px rgba(182,156,255,.25); } }
 .rise { animation: rise 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both; animation-delay: calc(var(--i, 0) * 70ms); }
 .pop { animation: pop 0.5s cubic-bezier(0.3, 1.6, 0.5, 1) both; }
 .grow-bar { transform-origin: bottom; animation: grow 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both; animation-delay: calc(var(--k, 0) * 28ms + 250ms); }
 .wc-pulse { position: relative; }
 .wc-pulse::after { content: ""; position: absolute; inset: 0; border-radius: 999px; border: 2px solid var(--accent); animation: ringsm 2.4s ease-out infinite; pointer-events: none; }
 .mic-fab { animation: glow 2.6s ease-in-out infinite; }
-.hero-card { background: radial-gradient(120% 90% at 100% 0%, rgba(92,242,197,0.28), transparent 55%), linear-gradient(150deg, var(--hero-a), var(--hero-b)); color: #f1f6f4; border: 1px solid rgba(255,255,255,0.08); }
+.hero-card { background: radial-gradient(120% 90% at 100% 0%, rgba(182,156,255,0.28), transparent 55%), linear-gradient(150deg, var(--hero-a), var(--hero-b)); color: #f3f1fa; border: 1px solid rgba(255,255,255,0.08); }
 .glass { background: var(--glass); backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px); }
 html, body { overflow-x: clip; }
 @media (prefers-reduced-motion: reduce) {

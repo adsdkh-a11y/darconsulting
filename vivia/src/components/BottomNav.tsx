@@ -32,7 +32,7 @@ export function BottomNav() {
       <nav aria-label="Main" className="glass pointer-events-auto mx-auto grid max-w-[440px] grid-cols-[1fr_1fr_84px_1fr_1fr] items-center rounded-[30px] border border-line px-1.5 py-2 shadow-[var(--shadow)]">
         <Tab href="/home" icon="home" label={t("nav.home")} active={on("/home")} />
         <Tab href="/timeline" icon="timeline" label={t("nav.timeline")} active={on("/timeline")} />
-        <Link href="/log/tell" aria-label={t("home.tell")} className="mic-fab tap mx-auto -mt-[30px] grid size-16 place-items-center rounded-full bg-gradient-to-br from-[#7ff7d4] to-[#27b893] text-[#04201a] transition active:scale-90">
+        <Link href="/log/tell" aria-label={t("home.tell")} className="mic-fab tap mx-auto -mt-[30px] grid size-16 place-items-center rounded-full bg-gradient-to-br from-[#c9b6ff] to-[#8a63f0] text-[#1b0c42] transition active:scale-90">
           <svg viewBox="0 0 24 24" className="size-7" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
             <rect x="9" y="3" width="6" height="11" rx="3" />
             <path d="M5 11a7 7 0 0 0 14 0M12 18v3" />

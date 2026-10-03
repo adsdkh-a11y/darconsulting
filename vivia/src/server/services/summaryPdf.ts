@@ -3,7 +3,7 @@ import type { SummaryContent } from "./summary";
 
 const INK = "#1f2a2e";
 const MUTED = "#5b6b70";
-const ACCENT = "#2f6f62";
+const ACCENT = "#5b3bb0";
 
 /** Render a Care Summary snapshot as a PDF (standard fonts only, no external assets). */
 export function renderSummaryPdf(c: SummaryContent): Promise<Buffer> {

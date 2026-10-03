@@ -174,7 +174,7 @@ export function TellVivia() {
       <div className="relative grid h-[150px] place-items-center">
         {listening && <><span className="absolute size-[92px] rounded-full border-2 border-primary" style={{ animation: "ring 1.8s ease-out infinite" }} /><span className="absolute size-[92px] rounded-full border-2 border-primary" style={{ animation: "ring 1.8s .6s ease-out infinite" }} /></>}
         <button type="button" onClick={toggleVoice} disabled={voice === false} aria-pressed={listening} aria-label={listening ? t("tell.listening") : t("tell.speak")}
-          className={cx("relative z-10 grid size-[92px] place-items-center rounded-full bg-gradient-to-br from-[#7ff7d4] to-[#27b893] text-[#04201a] transition duration-300 disabled:opacity-40", listening && "scale-110")}>
+          className={cx("relative z-10 grid size-[92px] place-items-center rounded-full bg-gradient-to-br from-[#c9b6ff] to-[#8a63f0] text-[#1b0c42] transition duration-300 disabled:opacity-40", listening && "scale-110")}>
           <svg viewBox="0 0 24 24" className="size-10" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden><rect x="9" y="3" width="6" height="11" rx="3" /><path d="M5 11a7 7 0 0 0 14 0M12 18v3" /></svg>
         </button>
       </div>
