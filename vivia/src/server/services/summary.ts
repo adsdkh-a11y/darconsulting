@@ -50,6 +50,7 @@ export type SummaryContent = {
   procedures?: { id: string; type: string; date: string; findings: string | null; sourceId: string | null }[];
   events?: { id: string; type: string; title: string; date: string; description: string | null }[];
   documents?: { id: string; title: string; type: string; date: string | null }[];
+  wellbeing?: { daysWithMood: number; avgMood: number | null; avgStress: number | null; lowMoodDays: number; recentLowMood: boolean; moodChange: string | null };
   trends?: { bowelMovements: { day: string; value: number }[]; pain: { day: string; value: number }[]; labs: Record<string, { day: string; value: number }[]> };
   questions?: string[];
   concerns?: string | null;
@@ -70,7 +71,7 @@ export async function buildSummaryContext(userId: string, periodDays: number, se
   const [profile, diagnosis, entries, meds, medEvents, labs, procs, events, docs] = await Promise.all([
     prisma.patientProfile.findUnique({ where: { userId }, select: { displayName: true, hasStoma: true } }),
     prisma.diagnosis.findFirst({ where: { userId, verificationStatus: { not: "REJECTED" } }, orderBy: { createdAt: "asc" }, select: { disease: true, diagnosedAt: true } }),
-    want("symptoms") || want("trends") ? prisma.symptomEntry.findMany({ where: { userId, date: { gte: from, lte: to } }, orderBy: { date: "asc" } }) : [],
+    want("symptoms") || want("trends") || want("wellbeing") ? prisma.symptomEntry.findMany({ where: { userId, date: { gte: from, lte: to } }, orderBy: { date: "asc" } }) : [],
     want("medications") || want("adherence") ? prisma.medication.findMany({ where: { userId, active: true, verificationStatus: { not: "REJECTED" } } }) : [],
     want("adherence") ? prisma.medicationEvent.findMany({ where: { userId, occurredAt: { gte: from, lte: to } } }) : [],
     want("labs") || want("trends") ? prisma.labResult.findMany({ where: { userId, takenAt: { gte: from, lte: to }, verificationStatus: { not: "REJECTED" } }, orderBy: { takenAt: "asc" } }) : [],
@@ -114,7 +115,7 @@ export async function generateSummary(
     disclaimer: DISCLAIMER,
   };
   const facts: string[] = [];
-  const signals: VisitSignals = { aboveBaseline: [], missedDoses: [], newLabs: [], procedures: [], events: [], patientConcerns: opts.concerns ?? undefined };
+  const signals: VisitSignals = { aboveBaseline: [], missedDoses: [], newLabs: [], procedures: [], events: [], patientConcerns: opts.concerns ?? undefined, wellbeing: undefined };
 
   if (sections.includes("symptoms")) {
     const e = ctx.entries;
@@ -203,6 +204,26 @@ export async function generateSummary(
       refs.push(`MedicalDocument:${d.id}`);
       return { id: d.id, title: d.title, type: d.type, date: d.documentDate ? dateToDay(d.documentDate) : null };
     });
+  }
+
+  if (sections.includes("wellbeing")) {
+    // Mood: 0 = low, 10 = good (labelled in the check-in). Descriptive only — no screening, no diagnosis.
+    const moods = ctx.entries.filter((x) => x.mood !== null);
+    const avgMood = avg(moods.map((x) => x.mood));
+    const lowMoodDays = moods.filter((x) => x.mood! <= 3).length;
+    const last7 = moods.slice(-7);
+    const recentLowMood = last7.length >= 5 && last7.filter((x) => x.mood! <= 3).length >= 5;
+    const half = Math.floor(moods.length / 2);
+    const first = avg(moods.slice(0, half).map((x) => x.mood));
+    const second = avg(moods.slice(half).map((x) => x.mood));
+    const moodChange = moods.length >= 10 && first !== null && second !== null && Math.abs(second - first) >= 1.5
+      ? `Mood entries averaged ${first} in the first half of the period and ${second} in the second half (0 = low, 10 = good).`
+      : null;
+    content.wellbeing = { daysWithMood: moods.length, avgMood, avgStress: avg(ctx.entries.map((x) => x.stress)), lowMoodDays, recentLowMood, moodChange };
+    moods.forEach((x) => refs.push(`SymptomEntry:${x.id}`));
+    if (moods.length) facts.push(`mood logged on ${moods.length} day(s), average ${avgMood}/10; ${lowMoodDays} day(s) rated 3 or below`);
+    if (moodChange) facts.push(moodChange);
+    if (lowMoodDays >= 3 || recentLowMood) signals.wellbeing = { lowMoodDays, recent: recentLowMood };
   }
 
   if (sections.includes("trends")) {

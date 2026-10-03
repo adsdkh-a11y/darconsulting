@@ -34,7 +34,7 @@ export function QuickCheckin({ tracked, hasStoma }: { tracked: string[]; hasStom
     if (k === "stoolConsistency")
       return <Choice key={k} label={t("sym.stoolConsistency")} value={(v.stoolConsistency as number) ?? null} onChange={set("stoolConsistency")}
         options={[1, 2, 3, 4, 5, 6, 7].map((i) => ({ value: i, label: [1, 4, 7].includes(i) ? `${i} · ${t(`sym.consistency.${i}` as DictKey)}` : String(i) }))} />;
-    return <Scale key={k} label={t(`sym.${k}` as DictKey)} value={(v[k] as number) ?? null} onChange={set(k)} />;
+    return <Scale key={k} label={t(`sym.${k}` as DictKey)} value={(v[k] as number) ?? null} onChange={set(k)} lowLabel={k === "mood" ? t("sym.mood.low") : undefined} highLabel={k === "mood" ? t("sym.mood.high") : undefined} />;
   }
 
   async function save(payload: Values) {

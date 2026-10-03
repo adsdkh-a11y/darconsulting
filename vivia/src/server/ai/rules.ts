@@ -410,6 +410,7 @@ const Q = {
     proc: (label: string, date: string) => `Could we go through the ${label} report from ${date} together?`,
     event: (label: string, date: string) => `I had an event on ${date} (${label}). Should anything change in how I monitor my symptoms?`,
     concerns: (c: string) => `I'd also like to discuss: ${c}`,
+    wellbeing: (n: number) => `I rated my mood as low on ${n} days in this period. Could we talk about how I am feeling and whether there is support available?`,
     none: "Is there anything in my recent data you would like me to track more closely?",
   },
   it: {
@@ -420,6 +421,7 @@ const Q = {
     proc: (label: string, date: string) => `Possiamo rivedere insieme il referto ${label} del ${date}?`,
     event: (label: string, date: string) => `Il ${date} ho avuto un evento (${label}). Dovrei cambiare qualcosa nel modo in cui monitoro i sintomi?`,
     concerns: (c: string) => `Vorrei anche parlare di: ${c}`,
+    wellbeing: (n: number) => `Ho valutato il mio umore come basso in ${n} giorni di questo periodo. Possiamo parlare di come mi sento e di quale supporto sia disponibile?`,
     none: "C'è qualcosa nei miei dati recenti che vorrebbe che monitorassi con più attenzione?",
   },
 };
@@ -433,6 +435,7 @@ export function visitNarrativeRules(input: VisitNarrativeInput): VisitNarrative 
   for (const l of s.newLabs.slice(0, 3)) questions.push(t.lab(l.label, l.value, l.date));
   for (const p of s.procedures.slice(0, 2)) questions.push(t.proc(p.label, p.date));
   for (const e of s.events.slice(0, 2)) questions.push(t.event(e.label, e.date));
+  if (s.wellbeing) questions.push(t.wellbeing(s.wellbeing.lowMoodDays));
   if (s.patientConcerns?.trim()) questions.push(t.concerns(s.patientConcerns.trim()));
   if (!questions.length) questions.push(t.none);
   return { overview: t.overview(input.periodLabel, input.facts.length), questions: questions.slice(0, 8) };

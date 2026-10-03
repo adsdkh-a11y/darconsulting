@@ -58,6 +58,8 @@ export type VisitSignals = {
   procedures: { label: string; date: string; findings?: string }[];
   events: { label: string; date: string }[];
   patientConcerns?: string;
+  /** Set only when the patient themselves logged low mood on several days. Descriptive, never a screening result. */
+  wellbeing?: { lowMoodDays: number; recent: boolean };
 };
 
 export type VisitNarrativeInput = {

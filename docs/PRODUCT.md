@@ -48,6 +48,16 @@ Direction: dark-first, fintech-grade, calm. Replaces the first warm-cream/serif 
 | Motion | Staggered rise on load, spring sheets, one-tap mood check-in with drawn checkmark, count-up figures, growing bars, pulsing urgency button and listening orb. All disabled under `prefers-reduced-motion`. |
 | Languages | EN reference, IT complete, FR/ES/DE/AR core flows; Arabic renders right-to-left. |
 
+## Psychological well-being (evidence note)
+
+An "IFCCA infographic" on patient preferences in IBD (screenshot reviewed only; the underlying study has **not** been verified — cite it only after checking the source) reports about 1,452 participants across 40 countries and 15 languages, with psychological well-being, abdominal pain/cramps and bowel urgency among the top priorities.
+
+What VIVIA does with this, without any diagnostic claim:
+- Mood and stress are tracked by default (0–10, with "Low / Good" anchors for mood) and can be switched off in the profile.
+- The Care Summary has an optional **Well-being** section: self-rated averages and days of low mood. Descriptive only — no screening, no score interpretation.
+- If the patient rated mood low on several days, a neutral question for the doctor is suggested ("could we talk about how I am feeling and whether support is available?").
+- **Draft, not live:** a supportive message with local help numbers for persistently very low mood requires clinical review before activation.
+
 ## Screens (MVP)
 
 | # | Screen | Route |

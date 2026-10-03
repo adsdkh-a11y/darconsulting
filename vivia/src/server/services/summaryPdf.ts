@@ -47,6 +47,13 @@ export function renderSummaryPdf(c: SummaryContent): Promise<Buffer> {
       h("Trend — bowel movements per day");
       chart(doc, c.trends.bowelMovements);
     }
+    if (c.wellbeing && c.wellbeing.daysWithMood > 0) {
+      h("Well-being (as rated by the patient)");
+      line(`Mood logged on ${c.wellbeing.daysWithMood} day(s): average ${c.wellbeing.avgMood ?? "–"}/10 (0 = low, 10 = good) · days rated 3 or below: ${c.wellbeing.lowMoodDays}`);
+      if (c.wellbeing.avgStress !== null) line(`Average stress (0–10): ${c.wellbeing.avgStress}`);
+      if (c.wellbeing.moodChange) line(`• ${c.wellbeing.moodChange}`);
+      muted("Self-rated scores; not a screening or a diagnosis.");
+    }
     if (c.medications) {
       h("Current treatment");
       if (!c.medications.length) line("No active medication recorded.");

@@ -7,7 +7,7 @@ import { DISEASES, SYMPTOM_KEYS } from "@/lib/schemas";
 import { LOCALES, LOCALE_NAMES } from "@/lib/i18n";
 import { Button, Field, Input, cx } from "./ui";
 
-const DEFAULT_TRACK = ["bowelMovements", "stoolConsistency", "blood", "urgency", "pain", "fatigue"];
+const DEFAULT_TRACK = ["bowelMovements", "stoolConsistency", "blood", "urgency", "pain", "fatigue", "mood", "stress"];
 
 export function Onboarding() {
   const { t, locale } = useI18n();

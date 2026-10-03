@@ -188,3 +188,25 @@ describe("provenance on merged check-ins", () => {
     expect(e).toMatchObject({ overall: 5, bowelMovements: 3, pain: 2 });
   });
 });
+
+describe("well-being section", () => {
+  it("summarises self-rated mood, suggests a neutral question, and stays isolated per patient", async () => {
+    const u = await makeUser();
+    const other = await makeUser();
+    const today = todayDay();
+    for (let i = 0; i < 6; i++) await logSymptoms(u.id, { date: addDays(today, -i), mood: 2, stress: 7 });
+    await logSymptoms(other.id, { date: today, mood: 9 });
+    const s = await generateSummary(u.id, { periodDays: 30, sections: ["wellbeing", "questions"] }, today);
+    const c = (await getSummary(u.id, s.id)).content;
+    expect(c.wellbeing).toMatchObject({ daysWithMood: 6, avgMood: 2, avgStress: 7, lowMoodDays: 6, recentLowMood: true });
+    expect(c.questions?.some((q) => /mood/i.test(q))).toBe(true);
+    expect(JSON.stringify(c)).not.toMatch(/diagnos(is|ed) of depress|you are depressed/i);
+  });
+
+  it("omits well-being when not requested", async () => {
+    const u = await makeUser();
+    await logSymptoms(u.id, { date: todayDay(), mood: 2 });
+    const s = await generateSummary(u.id, { periodDays: 30, sections: ["medications"] });
+    expect((await getSummary(u.id, s.id)).content.wellbeing).toBeUndefined();
+  });
+});

@@ -94,4 +94,11 @@ export const fr: Partial<Record<DictKey, string>> = {
   "ec.surgeries": "Chirurgies",
   "ec.stoma": "Stomie",
   "ec.contact": "Contact d'urgence",
+  "sym.mood.low": "Bas",
+  "sym.mood.high": "Bon",
+  "sum.section.wellbeing": "Bien-être psychologique",
+  "sum.avgMood": "Humeur moyenne",
+  "sum.avgStress": "Stress moyen",
+  "sum.lowMoodDays": "Jours d'humeur basse",
+  "sum.wellbeingNote": "Auto-évalué par le patient (humeur : 0 bas, 10 bon). Ni dépistage ni diagnostic.",
 };

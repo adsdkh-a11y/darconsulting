@@ -113,7 +113,7 @@ export const visitSchema = z.object({
   patientConcerns: z.string().max(2000).nullish(),
 });
 
-export const SUMMARY_SECTIONS = ["symptoms", "medications", "adherence", "labs", "procedures", "events", "documents", "trends", "questions", "concerns"] as const;
+export const SUMMARY_SECTIONS = ["symptoms", "medications", "adherence", "labs", "procedures", "events", "documents", "trends", "wellbeing", "questions", "concerns"] as const;
 
 export const summaryRequestSchema = z.object({
   visitId: z.string().uuid().nullish(),

@@ -60,6 +60,21 @@ export function SummaryView({ c, t, hideQuestions = false }: { c: SummaryContent
         </div>
       ))}
 
+      {c.wellbeing && c.wellbeing.daysWithMood > 0 && (
+        <>
+          <SectionTitle>{t("sum.section.wellbeing")}</SectionTitle>
+          <Card>
+            <dl className="grid grid-cols-2 gap-3">
+              <Stat label={t("sum.avgMood")} value={c.wellbeing.avgMood !== null ? `${c.wellbeing.avgMood}/10` : "–"} />
+              <Stat label={t("sum.avgStress")} value={c.wellbeing.avgStress !== null ? `${c.wellbeing.avgStress}/10` : "–"} />
+              <Stat label={t("sum.lowMoodDays")} value={c.wellbeing.lowMoodDays} />
+            </dl>
+            {c.wellbeing.moodChange && <p className="mt-4 border-t border-line pt-3 text-sm">• {c.wellbeing.moodChange}</p>}
+            <p className="mt-3 text-xs text-muted">{t("sum.wellbeingNote")}</p>
+          </Card>
+        </>
+      )}
+
       {c.medications && (
         <>
           <SectionTitle>{t("sum.section.medications")}</SectionTitle>
