@@ -1,7 +1,8 @@
 "use client";
 import Link from "next/link";
 import { useI18n } from "./I18n";
-import { Pill } from "./ui";
+import { Pill, cx } from "./ui";
+import { Icon } from "./Icon";
 import { directionsUrl, fmtDistance, type Place } from "@/lib/places";
 import type { DictKey } from "@/lib/i18n";
 
@@ -16,6 +17,33 @@ export function OpenStatus({ p }: { p: Pick<Place, "open24h" | "openNow"> }) {
 export function PlaceCard({ p, detailHref, big }: { p: Place; detailHref?: string; big?: boolean }) {
   const { t } = useI18n();
   const feats = p.features.filter((f) => f.status !== "UNVERIFIED");
+  if (!big) {
+    return (
+      <div className="rounded-3xl border border-line bg-surface p-4">
+        <div className="flex items-start gap-3">
+          <div className="grid size-16 shrink-0 place-items-center rounded-2xl bg-surface-2 text-center leading-none" aria-label={t("map.walk", { min: p.walkMinutes })}>
+            <span><b className="font-display block text-3xl text-primary tabular-nums">{p.walkMinutes}</b><span className="text-[11px] font-bold uppercase text-muted">{t("map.minShort")}</span></span>
+          </div>
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center gap-2">
+              {detailHref ? <Link href={detailHref} className="text-lg font-extrabold">{p.name}</Link> : <p className="text-lg font-extrabold">{p.name}</p>}
+              <OpenStatus p={p} />
+            </div>
+            <p className="mt-0.5 text-sm text-ink-2">{fmtDistance(p.distanceMeters)} · {p.reliability !== null ? t("map.reliability", { r: p.reliability, n: p.reviewCount }) : t("map.noReviews")}</p>
+            {feats.length > 0 && (
+              <p className="mt-1.5 flex flex-wrap gap-x-3 gap-y-0.5 text-xs text-ink-2">{feats.map((f) => <span key={f.feature}>{t(`feat.${f.feature}` as DictKey)}</span>)}</p>
+            )}
+            <p className={cx("mt-1.5 flex items-center gap-1 text-sm font-semibold", p.verificationType === "VIVIA_VERIFIED" || p.verificationType === "PARTNER_VERIFIED" ? "text-primary" : "text-muted")}>
+              {(p.verificationType === "VIVIA_VERIFIED" || p.verificationType === "PARTNER_VERIFIED") && <Icon name="check" className="size-4" />}
+              {t(`map.ver.${p.verificationType}` as DictKey)}
+            </p>
+            {p.openingHours && !p.open24h && <p className="mt-1 text-xs text-muted">{p.openingHours}</p>}
+          </div>
+          <a href={directionsUrl(p.latitude, p.longitude)} target="_blank" rel="noreferrer" aria-label={t("map.directions")} className="tap grid size-11 shrink-0 place-items-center rounded-full bg-primary text-primary-ink">↗</a>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className={big ? "" : "border-b border-line py-3 last:border-0"}>
       <div className="flex items-start justify-between gap-3">

@@ -1,7 +1,6 @@
 import { requirePageUser } from "@/server/session";
 import { getProfile } from "@/server/services/profile";
 import { getT } from "@/server/locale";
-import { PageHeader } from "@/components/ui";
 import { MapExplorer } from "@/components/MapExplorer";
 
 export default async function MapPage({ searchParams }: { searchParams: Promise<{ category?: string }> }) {
@@ -11,7 +10,7 @@ export default async function MapPage({ searchParams }: { searchParams: Promise<
   const { category } = await searchParams;
   return (
     <div>
-      <PageHeader title={t("map.title")} subtitle={t("map.subtitle")} />
+      <h1 className="sr-only">{t("map.title")}</h1>
       <MapExplorer stoma={!!profile?.hasStoma} initialCategory={category ?? "BATHROOM"} />
     </div>
   );

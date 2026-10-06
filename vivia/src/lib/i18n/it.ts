@@ -563,4 +563,7 @@ export const it: Partial<Record<DictKey, string>> = {
 
   "err.unauthorized": "Accedi di nuovo.",
   "map.distance": "{d}",
+  "map.minShort": "min",
+  "map.cantWait": "Non ce la faccio",
+  "map.search": "Cerca luoghi vicini",
 };

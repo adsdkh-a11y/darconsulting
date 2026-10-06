@@ -540,4 +540,7 @@ export const es: Partial<Record<DictKey, string>> = {
   "travel.places": "Descubre lo esencial en tu destino",
   "travel.soon": "Llegarán más funciones de viaje: destinos guardados y mapas sin conexión.",
   "err.unauthorized": "Vuelve a iniciar sesión.",
+  "map.minShort": "min",
+  "map.cantWait": "No puedo esperar",
+  "map.search": "Buscar lugares cercanos",
 };

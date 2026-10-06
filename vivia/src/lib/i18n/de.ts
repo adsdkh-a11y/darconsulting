@@ -540,4 +540,7 @@ export const de: Partial<Record<DictKey, string>> = {
   "travel.places": "Das Wichtigste am Reiseziel entdecken",
   "travel.soon": "Weitere Reisefunktionen folgen: gespeicherte Ziele und Offline-Karten.",
   "err.unauthorized": "Bitte melde dich erneut an.",
+  "map.minShort": "Min.",
+  "map.cantWait": "Ich kann nicht warten",
+  "map.search": "Orte in der Nähe suchen",
 };

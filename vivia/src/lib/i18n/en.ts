@@ -562,6 +562,9 @@ export const en = {
   "travel.soon": "More travel features are coming: saved destinations and offline maps.",
 
   "err.unauthorized": "Please sign in again.",
+  "map.minShort": "min",
+  "map.cantWait": "I can't wait",
+  "map.search": "Search nearby places",
 };
 
 export type DictKey = keyof typeof en;

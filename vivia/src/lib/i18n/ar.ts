@@ -540,4 +540,7 @@ export const ar: Partial<Record<DictKey, string>> = {
   "travel.places": "اكتشف الأساسيات في وجهتك",
   "travel.soon": "المزيد من ميزات السفر قادمة: وجهات محفوظة وخرائط دون اتصال.",
   "err.unauthorized": "يرجى تسجيل الدخول مرة أخرى.",
+  "map.minShort": "د",
+  "map.cantWait": "لا أستطيع الانتظار",
+  "map.search": "ابحث عن أماكن قريبة",
 };
