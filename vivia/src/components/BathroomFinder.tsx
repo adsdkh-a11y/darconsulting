@@ -85,7 +85,7 @@ export function BathroomFinder({ signedIn, stoma }: { signedIn: boolean; stoma: 
           {others.length > 0 && (
             <>
               <h2 className="mb-1 mt-6 text-sm font-semibold uppercase tracking-wider text-muted">{t("wc.others")}</h2>
-              <Card className="py-1">{others.map((p) => <PlaceCard key={p.id} p={p} detailHref={signedIn ? `/map/${p.id}` : undefined} />)}</Card>
+              <div className="space-y-3">{others.map((p) => <PlaceCard key={p.id} p={p} detailHref={signedIn ? `/map/${p.id}` : undefined} />)}</div>
             </>
           )}
           <Button variant="ghost" className="mt-3 w-full" onClick={() => run(stomaOn)}>↻ {t("map.useLocation")}</Button>
