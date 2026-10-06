@@ -545,4 +545,5 @@ export const de: Partial<Record<DictKey, string>> = {
   "map.search": "Orte in der Nähe suchen",
   "tell.headline": "Sag es ganz natürlich",
   "tell.hint": "Erzähl von Symptomen, Medikamenten, Stimmung oder allem, was heute wichtig war.",
+  "prof.subtitle": "Deine Einstellungen, Zugänge und Präferenzen.",
 };

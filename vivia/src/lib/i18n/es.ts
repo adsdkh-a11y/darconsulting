@@ -545,4 +545,5 @@ export const es: Partial<Record<DictKey, string>> = {
   "map.search": "Buscar lugares cercanos",
   "tell.headline": "Dilo con naturalidad",
   "tell.hint": "Habla de síntomas, medicación, ánimo o de cualquier cosa que haya importado hoy.",
+  "prof.subtitle": "Tus ajustes, accesos y preferencias.",
 };

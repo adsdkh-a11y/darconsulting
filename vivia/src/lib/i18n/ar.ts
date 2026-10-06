@@ -545,4 +545,5 @@ export const ar: Partial<Record<DictKey, string>> = {
   "map.search": "ابحث عن أماكن قريبة",
   "tell.headline": "قلها بشكل طبيعي",
   "tell.hint": "تحدّث عن الأعراض أو الأدوية أو المزاج أو أي شيء كان مهمًا اليوم.",
+  "prof.subtitle": "إعداداتك وصلاحيات الوصول وتفضيلاتك.",
 };

@@ -567,6 +567,7 @@ export const en = {
   "map.search": "Search nearby places",
   "tell.headline": "Say it naturally",
   "tell.hint": "Talk about symptoms, medication, mood or anything that mattered today.",
+  "prof.subtitle": "Your settings, access and preferences.",
 };
 
 export type DictKey = keyof typeof en;

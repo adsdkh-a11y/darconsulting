@@ -97,9 +97,9 @@ export function Notice({ children, tone = "neutral" }: { children: ReactNode; to
   return <div className={cx("rounded-2xl px-4 py-3 text-sm", tones[tone])}>{children}</div>;
 }
 
-export function ListLink({ href, title, detail, right, icon }: { href: string; title: ReactNode; detail?: ReactNode; right?: ReactNode; icon?: IconName }) {
+export function ListLink({ href, title, detail, right, icon, card }: { href: string; title: ReactNode; detail?: ReactNode; right?: ReactNode; icon?: IconName; card?: boolean }) {
   return (
-    <Link href={href} className="tap flex items-center gap-3 border-b border-line py-3 last:border-0">
+    <Link href={href} className={cx("tap flex items-center gap-3", card ? "rounded-3xl border border-line bg-surface p-4" : "border-b border-line py-3 last:border-0")}>
       {icon && <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-surface-2 text-ink" aria-hidden><Icon name={icon} /></span>}
       <span className="min-w-0 flex-1">
         <span className="block font-medium text-ink">{title}</span>
