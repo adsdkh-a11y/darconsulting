@@ -5,7 +5,7 @@ import { buildTimeline, type TimelineKind } from "@/server/services/timeline";
 import { Card, PageHeader, Pill, cx } from "@/components/ui";
 import { AddRecord } from "@/components/AddRecord";
 import { Icon, type IconName } from "@/components/Icon";
-import { fmtDay, todayDay } from "@/lib/dates";
+import { todayDay } from "@/lib/dates";
 import type { DictKey } from "@/lib/i18n";
 
 const FILTERS: { key: string; label: DictKey; kinds?: TimelineKind[] }[] = [
@@ -34,24 +34,30 @@ export default async function Timeline({ searchParams }: { searchParams: Promise
     if (!groups.has(k)) groups.set(k, []);
     groups.get(k)!.push(i);
   }
+  const short = (d: string) => new Date(d.slice(0, 10) + "T00:00:00Z").toLocaleDateString(locale === "ar" ? "ar" : locale, { day: "numeric", month: "short", timeZone: "UTC" });
   const row = (i: (typeof items)[number]) => {
     const inner = (
-      <div className="flex gap-3 py-3">
-        <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-surface-2" aria-hidden><Icon name={ICON[i.kind]} /></span>
-        <div className="min-w-0 flex-1">
-          <p className="font-medium">{i.title}</p>
-          {i.detail && <p className="text-sm text-ink-2">{i.detail}</p>}
-          <div className="mt-1 flex flex-wrap items-center gap-1.5 text-xs text-muted">
-            <span>{fmtDay(i.day, locale)}</span>
-            {i.source && <Pill>{t(`source.${i.source}` as DictKey)}</Pill>}
-            {i.extraSources?.map((x) => <Pill key={x}>+ {t(`source.${x}` as DictKey)}</Pill>)}
-            {i.verification === "NEEDS_DOCTOR_CONFIRMATION" && <Pill tone="warn">{t("verification.NEEDS_DOCTOR_CONFIRMATION")}</Pill>}
-          </div>
+      <div className="rounded-3xl border border-line bg-surface p-4">
+        <p className="font-bold">{i.title}</p>
+        {i.detail && <p className="mt-0.5 text-ink-2">{i.detail}</p>}
+        <div className="mt-2 flex flex-wrap items-center gap-1.5 text-xs text-muted">
+          {i.source && <Pill tone="primary"><Icon name="check" className="size-3" />{t(`source.${i.source}` as DictKey)}</Pill>}
+          {i.extraSources?.map((x) => <Pill key={x}>+ {t(`source.${x}` as DictKey)}</Pill>)}
+          {i.verification === "NEEDS_DOCTOR_CONFIRMATION" && <Pill tone="warn">{t("verification.NEEDS_DOCTOR_CONFIRMATION")}</Pill>}
         </div>
       </div>
     );
-    return <li key={i.id} className="border-b border-line last:border-0">{i.href ? <Link href={i.href} className="block">{inner}</Link> : inner}</li>;
+    return (
+      <li key={i.id} className="relative grid grid-cols-[3.25rem_2.75rem_1fr] items-start gap-2 pb-3">
+        <span className="pt-3 text-xs font-semibold text-muted">{short(i.day)}</span>
+        <span className="relative z-10 mt-1 grid size-11 place-items-center rounded-2xl bg-surface-2 text-primary" aria-hidden><Icon name={ICON[i.kind]} /></span>
+        {i.href ? <Link href={i.href} className="block">{inner}</Link> : inner}
+      </li>
+    );
   };
+  const rail = (list: (typeof items)) => (
+    <ul className="relative before:absolute before:inset-y-3 before:start-[4.4rem] before:w-px before:bg-line">{list.map(row)}</ul>
+  );
   return (
     <div>
       <PageHeader title={t("tl.title")} subtitle={t("tl.subtitle")} />
@@ -67,7 +73,7 @@ export default async function Timeline({ searchParams }: { searchParams: Promise
       {upcoming.length > 0 && (
         <>
           <h2 className="mb-1 mt-6 text-sm font-semibold uppercase tracking-wider text-muted">{t("tl.upcoming")}</h2>
-          <Card className="py-0"><ul>{upcoming.map(row)}</ul></Card>
+          {rail(upcoming)}
         </>
       )}
       {past.length === 0 && upcoming.length === 0 ? (
@@ -76,7 +82,7 @@ export default async function Timeline({ searchParams }: { searchParams: Promise
         [...groups.entries()].map(([month, list]) => (
           <section key={month}>
             <h2 className="mb-1 mt-6 text-sm font-semibold uppercase tracking-wider text-muted">{month}</h2>
-            <Card className="py-0"><ul>{list.map(row)}</ul></Card>
+            {rail(list)}
           </section>
         ))
       )}
