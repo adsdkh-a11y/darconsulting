@@ -171,10 +171,11 @@ export function TellVivia() {
 
   return (
     <div className="space-y-4">
-      <div className="relative grid h-[150px] place-items-center">
-        {listening && <><span className="absolute size-[92px] rounded-full border-2 border-primary" style={{ animation: "ring 1.8s ease-out infinite" }} /><span className="absolute size-[92px] rounded-full border-2 border-primary" style={{ animation: "ring 1.8s .6s ease-out infinite" }} /></>}
+      <div className="relative grid h-[190px] place-items-center">
+        {listening && <><span className="absolute size-[110px] rounded-full border-2 border-primary" style={{ animation: "ring 1.8s ease-out infinite" }} /><span className="absolute size-[110px] rounded-full border-2 border-primary" style={{ animation: "ring 1.8s .6s ease-out infinite" }} /></>}
+        {!listening && <span className="absolute size-[150px] rounded-full border border-line" aria-hidden />}
         <button type="button" onClick={toggleVoice} disabled={voice === false} aria-pressed={listening} aria-label={listening ? t("tell.listening") : t("tell.speak")}
-          className={cx("relative z-10 grid size-[92px] place-items-center rounded-full bg-gradient-to-br from-[#c9b6ff] to-[#8a63f0] text-[#1b0c42] transition duration-300 disabled:opacity-40", listening && "scale-110")}>
+          className={cx("relative z-10 grid size-[110px] place-items-center rounded-full bg-gradient-to-br from-[#c9b6ff] to-[#8a63f0] text-[#1b0c42] transition duration-300 disabled:opacity-40", listening && "scale-110")}>
           <svg viewBox="0 0 24 24" className="size-10" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden><rect x="9" y="3" width="6" height="11" rx="3" /><path d="M5 11a7 7 0 0 0 14 0M12 18v3" /></svg>
         </button>
       </div>
@@ -183,7 +184,11 @@ export function TellVivia() {
           <i key={k} className="h-full w-1 rounded bg-primary" style={{ transform: listening ? undefined : "scaleY(.2)", opacity: listening ? 1 : 0.35, animation: listening ? `wave .9s ${k * 70}ms ease-in-out infinite` : undefined }} />
         ))}
       </div>
-      <p className="text-center text-sm font-semibold text-ink-2" aria-live="polite">{listening ? t("tell.listening") : voice === false ? t("tell.noVoice") : t("tell.speak")}</p>
+      <p className="text-center text-sm font-semibold text-primary" aria-live="polite">{listening ? t("tell.listening") : voice === false ? t("tell.noVoice") : t("tell.speak")}</p>
+      <div className="px-2 text-center">
+        <h2 className="font-display text-3xl font-extrabold tracking-[-0.03em]">{t("tell.headline")}</h2>
+        <p className="mt-2 text-ink-2">{t("tell.hint")}</p>
+      </div>
       <Card>
         <Textarea aria-label={t("tell.title")} placeholder={t("tell.placeholder")} value={text} onChange={(e) => setText(e.target.value)} maxLength={2000} className="min-h-32 text-lg" />
         <Button className="mt-3 w-full" disabled={!text.trim() || busy} onClick={interpret}>{busy ? t("common.loading") : t("tell.understand")}</Button>

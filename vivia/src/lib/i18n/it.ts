@@ -566,4 +566,6 @@ export const it: Partial<Record<DictKey, string>> = {
   "map.minShort": "min",
   "map.cantWait": "Non ce la faccio",
   "map.search": "Cerca luoghi vicini",
+  "tell.headline": "Dillo con naturalezza",
+  "tell.hint": "Racconta sintomi, terapia, umore o qualsiasi cosa sia stata importante oggi.",
 };
