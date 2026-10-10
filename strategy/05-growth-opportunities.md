@@ -322,3 +322,16 @@ Chosen for **learning value, feasibility without hosting, and low privacy risk**
 **Not in the 30 days:** #5 (needs hosting and data-protection readiness), #11 (pre-orders need legal review), #13–#20.
 
 **Dependencies:** #1 and #2 need warm introductions (nurses, association). #3 needs `08` and `04` wording. #6 needs consent forms and a clinician advisor.
+
+---
+
+## 6. Update 2026-10-10: constraints fixed by the founder
+
+Founder decisions (see `10` §1b): **payer to test = clinics, patient associations, funders**; **< 10 hours/week**; **≈ €2,400 hard cap**; **the Base44 app is the product** (review pending, `11`).
+
+Effects on this file:
+- **#11 (willingness-to-pay pre-order): removed from the 90 days.** Patient subscriptions are no longer the payer hypothesis. Keep only as a later check.
+- **#9 (association partnership) and #2 (clinician interviews) move up.** **#13 (clinic pilot) becomes the main long-term bet**, still after Gate 2.
+- **30-day set reduced to what < 10 h/week allows:** (1) **8 patient interviews**, (2) **4 clinician interviews**, (3) **2 association conversations**, (4) **place-data audit in 2 cities**, (5) **email-only landing page** (no ads). The concierge summary shrinks to **3 volunteers**.
+- **Not affordable inside the cap:** ads, a security review, a real-data pilot, paid content.
+- **Everything about product features refers to the Base44 app only after it has been reviewed**; claims stay labelled as hypotheses until then.

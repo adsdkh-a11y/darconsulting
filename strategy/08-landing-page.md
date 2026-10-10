@@ -4,6 +4,8 @@ _Date: 2026-10-10. Uses the position in `04-positioning.md` (better-prepared vis
 
 > **What this page is.** An honest page for an **early prototype**. It invites people to **talk and test**, not to download or pay. VIVIA is **not deployed**; no real user has used it. Therefore: no testimonials, no statistics about VIVIA, no screenshots presented as live use, no "download" button. The Italian copy is a **draft needing native and clinical review**. "VIVIA" is a **working name** (no trademark or domain check done).
 
+**Update 2026-10-10 (founder decision F3):** the Base44 app is the product. The capability statements below were verified for the **VIVIA repository prototype** only; **re-verify each against the Base44 app (`11`) before publishing**, and do not describe privacy or security measures until they are confirmed for that app.
+
 **Feature labelling rule.** Capabilities below are *present in the prototype and covered by automated tests* [V] but **not publicly available**. The page says "In the prototype". Anything not built is labelled **Planned**. Items still unproven are written as goals ("we're testing whether…").
 
 ---

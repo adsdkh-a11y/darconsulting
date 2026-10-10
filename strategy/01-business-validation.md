@@ -228,3 +228,15 @@ Cost ranges are my estimates **[E]** (incentives, ads, tools; excluding founder 
 3. **Which codebase is the product: this repository or the Base44 app?** Two codebases break the single-source-of-truth rule and split the effort and the security posture.
 4. **What is the regulatory position, and who will advise you?** Decide whether VIVIA stays strictly wellness (and gives up reimbursement routes that require CE marking) or pursues a medical-device path later, and obtain qualified legal/regulatory advice before any claim about summaries, trends or AI.
 5. **What is the 90-day budget and the stop rule?** Commit money and time to the validation sprint (§8), fix the pass lines now, and agree in advance what result makes you pivot or stop.
+
+---
+
+## 12. Founder responses to the five decisions (2026-10-10)
+
+| # | Decision | Response |
+|---|---|---|
+| 1 | Paying customer to test first | **Clinics, patient associations and funders** (not patient subscriptions) |
+| 2 | Beachhead segment | **Confirmed:** experienced adults with regular visits; secondary: people with a stoma |
+| 3 | Codebase | **The Base44 app** (review pending; `11`) |
+| 4 | Legal/regulatory advice | **Yes** (brief in `11`) |
+| 5 | 90-day budget and stop rule | **≈ €2,400 cap, < 10 h/week, stop rules fixed in `10` §1b** |

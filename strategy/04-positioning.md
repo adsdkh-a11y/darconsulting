@@ -190,6 +190,8 @@ Plain sentences, second person, short. Say what the product does, not how smart 
 ## 4. Claims framework
 
 ### A. Verified product capabilities (present in the code and covered by automated tests; not yet used by real patients)
+
+> **Update 2026-10-10 (founder decision F3):** this list describes the **VIVIA repository prototype**. The founder chose the **Base44 app** as the product. **No item below may be used publicly for the Base44 app until it has been checked against that app** (`11`). Until then treat every item as *hypothesis*.
 - Quick check-in, one-tap mood, "same as yesterday"; **Tell VIVIA** (type or browser voice) with confirmation before saving.
 - Timeline with **source labels** and verification state.
 - Document upload with extraction proposals the patient **confirms, fixes or rejects**; conflicts shown, not silently merged. *(Tested with the built-in rules engine; the Claude-based path has not been tested with a real key.)*

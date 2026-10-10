@@ -4,6 +4,8 @@ _Date: 2026-10-10. Sources of truth: `01`–`05`, `docs/LAUNCH_CHECKLIST.md`. Ta
 
 > **Honest starting point.** VIVIA has **no audience, no content history and no user data**. The goal of these 30 days is **learning and recruitment, not reach**. "Validated audience" in the brief does not yet exist: audience and message are still hypotheses (`02`). All Italian copy below is a **draft for native-speaker and clinician review before publication**. Health facts used are limited to sourced statements in `01`; every post carries a source line or a "to verify" flag.
 
+> **Update 2026-10-10 (founder constraints, `10` §1b):** time is **< 10 hours/week** and the budget cap ≈ €2,400. Use a **minimal version of this plan**: **LinkedIn only (2 posts/week), one article, no reels, no ads**, community listening only with moderator permission, and the email-only waitlist. Keep the safeguards in §7. The product referred to is the **Base44 app**; do not publish capability statements until they are re-verified (`11`).
+
 ---
 
 ## 1. Objectives and how they are measured

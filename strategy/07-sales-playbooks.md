@@ -217,6 +217,8 @@ Offer: a one-page summary, a co-design workshop with 6–8 members, and an agree
 
 ---
 
+> **Update 2026-10-10:** the payer to test first is **clinics, patient associations and funders** (`10` §1b F1). **Patient pre-orders are not part of the 90-day plan**; the premium-subscription row below is kept only for later reference. Ask about **who funds** and **what a pilot would cost in time and money**, not about patient prices.
+
 ## 5. Pricing discussion framework (discovery, not offering)
 
 **Principle:** do not quote prices as validated. Ask what people would pay and who should pay, then test with **pre-orders only after legal review of pre-sales** (`05` #11).

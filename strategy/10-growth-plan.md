@@ -14,12 +14,59 @@ _Date: 2026-10-10. Built on `00`–`09` and the actual state of the repository. 
 | # | Assumption |
 |---|---|
 | A1 | Initial market: **Italy**; interviews and content in **Italian** (founder or an editor can write Italian) |
-| A2 | Founder time: **15–20 hours/week**; engineering by an AI-assisted workflow or a part-time freelancer; no employees |
-| A3 | Budget for 90 days: **≈ €2,400 (lean) to €6,600 (base)**; see §6 |
-| A4 | The **VIVIA repository is the product codebase**; the Base44 app is not used until reviewed (decision needed, §9) |
+| A2 | ~~Founder time 15–20 h/week~~ **Superseded 2026-10-10: founder time is < 10 h/week** (see §1b) |
+| A3 | ~~Budget €2,400–€6,600~~ **Superseded 2026-10-10: hard cap ≈ €2,400, released by phase** (see §1b) |
+| A4 | ~~VIVIA repository is the product~~ **Superseded 2026-10-10: the founder chose the Base44 app as the product**, subject to the review in `11-base44-review-and-counsel-brief.md` before any real data or public claim |
 | A5 | Real patient data is **not** processed until the launch checklist sections 1–4 are met; tests use fictional data until then |
 | A6 | A clinical advisor and a data-protection/legal adviser can be recruited within 3 weeks [H] |
 | A7 | **Primary segment:** adults on long-term therapy with regular visits; **secondary:** people with a stoma (`02`) |
+
+## 1b. Founder decisions and fixed constraints (2026-10-10; override anything earlier in this file)
+
+| # | Decision | Consequence |
+|---|---|---|
+| F1 | **Payer to test first: clinics, patient associations and funders.** Not patient subscriptions. | Pre-order/price tests (`05` #11) are **removed from the 90 days**. Interviews, association conversations and a clinic pilot discussion move up. Gate 3 no longer accepts a patient pre-order signal as a substitute for a named sponsor. |
+| F2 | **Segments confirmed:** primary = experienced adults with regular visits (B); secondary = people with a stoma (D). | Unchanged from `02`. |
+| F3 | **The Base44 app is the product codebase.** | Everything in `04` §4 and `08` that was "verified" referred to the **VIVIA repository prototype** and must be **re-verified against the Base44 app** before any public claim. The tests, security work and privacy features in the repository do **not** transfer. See `11`. |
+| F4 | **Legal and regulatory advice: yes**, to be obtained. | Brief for counsel in `11`. Budgeted below. |
+| F5 | **Hard budget cap ≈ €2,400** for 90 days (excluding founder time), **released by phase**; **founder time < 10 hours/week**. | Smaller volumes (below); no ads; no security review; **no real health data pilot inside the 90 days**. |
+
+### Budget released by phase (hard caps)
+
+| Phase | Cap | Typical use | Release condition |
+|---|---|---|---|
+| 1 (days 1–30) | **≤ €900** | €300 interview vouchers (8–10 × €30); €400 first scoped legal consultation (privacy notice, wellness boundary); €60 domain and tools; €140 Italian copy review | Start now |
+| 2 (days 31–60) | **≤ €900** | €50 staging hosting; €400 clinical advisor honorarium (or volunteer); €350 legal scoping (processor agreement, DPIA outline); €100 tools and review | **Gate 1 passed** |
+| 3 (days 61–90) | **≤ €600** | €150 test incentives; €25 hosting; €250 legal follow-up; €175 reserve | **Gate 2 passed** |
+| **Total** | **≤ €2,400** | | A single spend above €300 needs a written decision in `00` |
+
+### Time budget and what it allows (≈ 130 hours over 13 weeks)
+- **Days 1–30 (≤ ~40 h):** **8 patient interviews, 4 clinician interviews, 2 association conversations, 1 email-only landing page, a place-data audit in 2 cities, and a concierge Care Summary for 3 volunteers.** Content: **LinkedIn only, 2 posts/week, no reels, one article** (`06` lean option reduced further).
+- **Volumes are small: every result is "indicative only".** Do not generalise from 8 interviews.
+- **Extension rule:** if the Gate 1 sample is not reached because of time, Phase 1 may be extended **once, by up to 14 days**; no other deadline moves.
+- **Hours cap:** if two consecutive weeks exceed **10 h**, cut scope (content first, then audit) instead of extending hours.
+
+### What this budget can and cannot prove
+- **Can validate:** problem recognition, clinician and association interest, a named sponsor, usability on a prototype, and whether the Base44 app passes a basic review.
+- **Cannot validate:** **retention with real health data.** A real-data pilot needs a completed DPIA, processor agreements and a clinical sign-off (about **€2,500–€6,000 more** in legal work alone, `docs/LAUNCH_CHECKLIST.md`). **Decide the pilot budget at Gate 2, not now.** Until then, any "retention" figure from fictional data is **not valid evidence**, so **Gate 3 can only be a conditional "continue to a funded pilot" or "pause".**
+
+### Revised thresholds (fixed now, before results; indicative only given the sample)
+
+| Gate | Evidence required | Stop / change rule |
+|---|---|---|
+| **Gate 0 (day 14)** | ≥ 6 patient interviews done | **If fewer than 30% (under 2 of 6) recognise** the visit-preparation or under-discussed-symptom problem: change segment (D) or message; if still under 30% after 6 more, **stop this segment** |
+| **Gate 1 (day 30, or day 44 with the one extension)** | ≥ 8 patient and ≥ 4 clinician interviews; **≥ 4 of 8 patients** recognise the problem unprompted; **≥ 2 of 4 clinicians** would read a patient summary and **≥ 1 would consider a pilot**; **≥ 2 association or clinic-leader conversations with ≥ 1 offering a concrete next step**; concierge test: **≥ 2 of 3** volunteers bring the summary to a visit | **If no clinician, association or funder offers any next step (even a free pilot) → do not start Phase 2; pivot to a free, association-supported tool or pause.** |
+| **Gate 2 (day 60)** | Base44 app review (`11`) **passed** or risks accepted in writing; privacy notice and consent wording reviewed by counsel; wellness/medical-device advice obtained; clinical advisor engaged; staging usable with fictional data; usability: **≥ 7 of 10** complete the core tasks | **If counsel and a clinical advisor are not engaged by day 45 → no real-data work; if still none by day 60 → pause.** Decide the pilot budget here |
+| **Gate 3 (day 90)** | ≥ 1 **named sponsor** (clinic, association or funder) willing to design and fund or host a pilot, with a draft agreement; no privacy or safety incident | **No named sponsor at day 90 → pause spending** and keep only low-cost interviews |
+
+### Hard stop rules (decided in advance)
+1. **Spending cap reached (≈ €2,400, or a phase cap)** → stop and review; do not borrow from the next phase.
+2. **Any privacy or safety incident** (data exposed, medical advice given by the tool, a consent breach) → **pause all public activity** until fixed and documented.
+3. **Base44 review fails a high-severity item** (e.g. one user can see another's data, health data hosted outside an acceptable region without a contract, no deletion) and cannot be fixed within 30 days → **do not enrol users or publish a waitlist for that app**.
+4. **Counsel or clinical advisor not engaged** by the dates above → no real data.
+5. **Two quarters with no sponsor and no repeated use** (checked at day 90 and again at day 180) → stop development.
+
+---
 
 ## 2. Roles
 
@@ -92,7 +139,7 @@ Each gate needs **all** items in the "evidence" column and **no unresolved item*
 | Evidence | Readiness gate |
 |---|---|
 | ≥50% of the cohort log ≥8 of 14 days; ≥50% generate a summary; ≥3 clinicians/patients report it used in a visit | **Privacy:** DPIA complete; no privacy incidents; deletion honoured |
-| ≥1 named sponsor (clinic, association, funder) ready for a designed pilot **or** a paid pre-order signal (≥30% of reservers at one price) | **Security:** independent review done, high findings fixed |
+| ≥1 named sponsor (clinic, association, funder) ready for a designed pilot (a patient pre-order is **not** a substitute; see §1b F1) | **Security:** independent review done, high findings fixed |
 | Trust feedback: majority describe privacy controls as clear; no unresolved safety complaints | **Clinical safety:** clinical review complete; any AI path tested with a real key on synthetic documents and signed off |
 | Unit economics plausible (§6): clear route to cover infrastructure and AI costs | **Regulatory:** advice documented; claims log clean |
 **Outcomes:** *Continue* (all met) · *Narrow* (one segment passes) · *Pivot* (retention fails but clinicians want summaries; or stoma pulls) · *Pause* (no sponsor, no retention, no trust).
@@ -193,7 +240,7 @@ Targets are **proposals**, not benchmarks; downloads and social engagement are *
 5. **Community/forum, food-photo scanner and more languages** (unvalidated; translation quality unreviewed). *Reminders only if interviews or the pilot show them to be the cause of drop-off.*
 
 ### 8.3 The most important evidence needed before investing more money
-**Someone besides the patient will fund it, or patients will confirm a paid pre-order, *and* people keep using it.** Concretely: **(a)** at least one named sponsor (clinic, association or funder) ready to design a paid or funded pilot, **or** ≥30% of price-test reservers confirming a paid pre-order; **and (b)** ≥50% of a pilot cohort logging ≥8 of 14 days with at least some bringing the summary to a real visit. Without (a) and (b) the product is a tool without a business model or without usage.
+**Someone besides the patient will fund it, *and* people keep using it.** Concretely: **(a)** at least one named sponsor (clinic, association or funder) ready to design a paid or funded pilot (the founder chose this route on 2026-10-10); **and (b)** ≥50% of a pilot cohort logging ≥8 of 14 days with at least some bringing the summary to a real visit. Without (a) and (b) the product is a tool without a business model or without usage. **Note:** (b) cannot be shown with fictional data (§1b); it needs a funded real-data pilot.
 
 ### 8.4 Founder dashboard (one page, update weekly)
 

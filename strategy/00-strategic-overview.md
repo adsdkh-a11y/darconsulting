@@ -16,7 +16,7 @@ _Created 2026-10-10; updated 2026-10-10 after deliverables `01`–`10`. Every cl
 | Map data | Demo places are fictional; real coverage unmeasured | [V]/[U] |
 | Privacy/regulatory | Wellness position by design. No DPIA, security review, clinical review, privacy notice, terms or legal advice | [V] |
 | Design | Violet brand; Figma Make prototype (25 screens); Map, Tell VIVIA, Profile, Health Memory screens ported; **Home not yet aligned** | [V] |
-| Second codebase | Base44 app reported "ready for the App Store" by the founder; **not inspected** | [U] |
+| Base44 app | **Chosen by the founder (2026-10-10) as the product codebase.** Reported "ready for the App Store"; **not inspected**: security, hosting, data handling and features unknown. Review plan in `11` | [U] |
 | Revenue, paying customers, retention, acquisition cost, willingness to pay | **None demonstrated** | [V] |
 
 ## 2. Key conclusions from the ten strategy files
@@ -42,15 +42,19 @@ _Created 2026-10-10; updated 2026-10-10 after deliverables `01`–`10`. Every cl
 | D2 | Violet brand; coral reserved for urgency | Adopted |
 | D3 | No real patient data until DPIA, security review, clinical review and a hosting/DPA decision | Adopted |
 | D4 | All segments and monetisation models are hypotheses | Adopted |
-| D5 | Position: better-prepared doctor visits (`04`) | **Proposed, awaiting founder confirmation and evidence** |
-| D6 | Italy first, Italian-language content | **Proposed (assumption A1 in `10`)** |
-| D7 | Beachhead B, secondary D | **Proposed, reversible after interviews** |
-| D8 | Do not build now: clinician portal, wearables, AI chat/prediction, native apps, community/food/more languages | **Proposed (`10` §8.2)** |
+| D5 | Position: better-prepared doctor visits (`04`) | Proposed; awaiting evidence |
+| D6 | Italy first, Italian-language content | Proposed (assumption in `10`) |
+| D7 | **Beachhead B (experienced adults, regular visits); secondary D (stoma)** | **Confirmed by the founder 2026-10-10**; reversible after interviews |
+| D8 | Do not build now: clinician portal, wearables, AI chat/prediction, native apps, community/food/more languages | Proposed (`10` §8.2) |
+| D9 | **Payer to test first: clinics, patient associations, funders.** Patient subscriptions and pre-orders are out of the 90 days | **Decided 2026-10-10 (F1)** |
+| D10 | **The Base44 app is the product codebase**, subject to the review in `11` before any real data, waitlist or public claim | **Decided 2026-10-10 (F3)**; supersedes assumption A4 in `10` |
+| D11 | **Obtain legal and regulatory advice** (brief in `11` Part B) | **Decided 2026-10-10 (F4)** |
+| D12 | **Hard budget cap ≈ €2,400 for 90 days, released by phase; founder time < 10 h/week; stop rules in `10` §1b** | **Decided 2026-10-10 (F5)** |
 
 ## 4. Open questions (ranked)
 
-1. **Who pays?** A clinic, association or funder, or patients (pre-order)? [U]
-2. **Which codebase is the product** (this repository or the Base44 app)? Two sources of truth would contradict rule 2. [U]
+1. **Will a clinic, association or funder actually sponsor a pilot?** (patients are not the payer to test; D9) [U]
+2. **Does the Base44 app pass the review in `11`?** (security, hosting, isolation, deletion, AI behaviour, claims). Until then nothing about it is verified. [U]
 3. Will people keep using it for at least two weeks? [U]
 4. Will clinicians read a patient-prepared summary and under what conditions? [U]
 5. Is the wellness position legally sound for the claims actually made? Legal and regulatory advice not yet obtained. [U]
@@ -82,4 +86,11 @@ Web pages could not be opened in this environment; sourced figures come from **s
 
 ## 8. Most important next decision
 
-**Choose the first paying-customer hypothesis to test (patient pre-order vs clinic/association funding) and commit the 90-day plan's interviews and stop rules before building more.** Without a payer or evidence of repeated use, further development adds cost without information. Also decide which codebase is the product.
+**Give the Base44 app (or its export and screenshots) for the review in `11`, and approve the Phase 1 budget (≤ €900).** Everything else in Phase 1 (interviews, association and clinician conversations, landing page, place audit) can start without it, but no waitlist, claim or real data should go out until the review passes.
+
+## 9. Consequences of the founder's decisions (2026-10-10)
+
+- **Verified-capability statements** in `04` §4 and `08` describe the **repository prototype**; they must be **re-verified against the Base44 app** before any public use (`11` A3).
+- **The tests, security work, export/deletion and privacy controls built in the repository do not transfer** to the Base44 app.
+- **With ≈ €2,400 and < 10 h/week, the 90 days can validate demand, sponsor interest and usability; they cannot validate retention with real health data** (needs a funded, legally reviewed pilot, decided at Gate 2).
+- **Contradiction logged:** `docs/ROADMAP.md`, `docs/DEPLOYMENT.md` and the launch checklist assume the repository is the product. They stay accurate for the repository; **they are not a description of the Base44 app.**
