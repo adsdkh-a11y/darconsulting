@@ -62,6 +62,27 @@ _Date: 2026-10-10. Created after founder decisions F3 (the Base44 app is the pro
 - **Not fixable on the platform** (isolation, region, deletion) → decision: move to the repository codebase (which already has isolation tests, export, deletion and encrypted documents, **but is also unreviewed and undeployed**) or pause. This is a founder decision, to be taken with the review evidence.
 - **Cannot inspect at all** (no export, no access to logs or settings) → treat as "unknown", do not use for real data, and use the repository prototype for any demonstration.
 
+### A5. Results of the code review (2026-10-11, read-only via the Base44 MCP connector)
+
+App: "VIVIA (Copy)", id `6ac8acfbbe067aec5260f40f`. Static review of code, entity schemas and RLS. Nothing was run, nothing was changed. Hosting region, DPA, password policy, logs and accessibility are still **Unknown** (platform information needed).
+
+| # | Severity | Finding | Status |
+|---|---|---|---|
+| 1 | High | `DocUploadSheet.proposeExtracted()` returns hard-coded lab values (calprotectin 180, hemoglobin 13.2, CRP 4.1) and is used by `Memory.jsx`: fake "extraction" saved as the patient's own data. The real flow (`DocExtractSheet`) exists but is used elsewhere. | **Fail** |
+| 2 | High | `seedPersonalDemoIfEmpty` writes fake medical data (Anna Rossi) into real accounts, including `Consent.create({ data_sharing: true })`. | **Fail** |
+| 3 | High | Care-summary share link `/share/:token` has **no route** in `App.jsx`: the link is dead; the 7-day expiry and revocation are client-side only. | **Fail** |
+| 4 | High | No explicit health-data consent or terms at registration (email/password/Google only). | **Fail** |
+| 5 | High | AI flows send condition, medications, allergies, check-in notes and memory items to a third-party LLM (`getLifestyleAdvice`, `planIbdTravel`) with no consent gate; `Coach.jsx` calls the LLM automatically on load; no output filter beyond prompt rules (`NEUTRAL_RULES`). Spoken text goes to ElevenLabs (`speakText`). | **Fail** (needs counsel, brief Q on processors) |
+| 6 | High | `findNearbyBathrooms` writes LLM-generated places (`ai_suggested`, `open_now: true` by default) into the **shared public `Place` table** via service role: hallucinated toilets shown to all users. | **Fail** |
+| 7 | Medium | Deletion: `deleteAll` empties entities but does not delete the account or uploaded files. Export includes all `CommunityPost`/`CommunityReply` (not only the user's own). | **Fail** |
+| 8 | Medium | Community is seeded with fabricated posts/replies; no moderation. | **Fail** |
+| 9 | Medium | `BathroomEmergency` lists the first 20 `Place` rows, with no sorting or geolocation (not usable in an emergency). | **Fail** |
+| 10 | Medium | Speech recognition language hard-coded `en-US`. | **Fail** |
+| 11 | Medium | Privacy claims in the UI ("only visible to you", expiring links) are not all backed by the code (see 3, 5, 7). | **Fail** |
+| 12 | Pass | RLS `created_by_id = {{user.id}}` on personal entities; `Place` writes admin-only; real document flow uses private upload and 900 s signed URL with patient confirmation; Tell-VIVIA is rule-based with confirm-before-save. | **Pass (by reading; not tested)** |
+
+Consequence: hard stop rule 3 in `10` is active. **No users, waitlist or public claim on this app until items 1–6 are fixed** (30-day fix window). Items 1–3 and 6 are fixable inside the app; 4–5 also need counsel input.
+
 ---
 
 ## Part B — Brief for legal and regulatory counsel (decision F4)

@@ -54,7 +54,7 @@ _Created 2026-10-10; updated 2026-10-10 after deliverables `01`–`10`. Every cl
 ## 4. Open questions (ranked)
 
 1. **Will a clinic, association or funder actually sponsor a pilot?** (patients are not the payer to test; D9) [U]
-2. **Does the Base44 app pass the review in `11`?** (security, hosting, isolation, deletion, AI behaviour, claims). Until then nothing about it is verified. [U]
+2. **Does the Base44 app pass the review in `11`?** Code review done 2026-10-11 (`11` A5): **6 high-severity fails** (fake document extraction, demo data with data_sharing seeded into real accounts, dead share link, no health-data consent, ungated LLM data flows, AI-generated places in the shared table) and 5 medium. Stop rule 3 is active: no users/waitlist on that app until fixed. Hosting, DPA, password policy remain unknown. [V]
 3. Will people keep using it for at least two weeks? [U]
 4. Will clinicians read a patient-prepared summary and under what conditions? [U]
 5. Is the wellness position legally sound for the claims actually made? Legal and regulatory advice not yet obtained. [U]
