@@ -3,19 +3,28 @@ import { useId } from "react";
 /** Awareness-ribbon mark (violet is the IBD / MICI colour) whose crossed tails read as a "V". */
 export function LogoMark({ className = "size-9", mono = false }: { className?: string; mono?: boolean }) {
   const id = useId();
-  const stroke = mono ? "currentColor" : `url(#${id})`;
+  const stroke = mono ? "currentColor" : `url(#${id}g)`;
   return (
     <svg viewBox="0 0 100 100" className={className} aria-hidden fill="none">
-      {!mono && (
-        <defs>
-          <linearGradient id={id} x1="0" y1="0" x2="1" y2="1">
+      <defs>
+        {!mono && (
+          <linearGradient id={`${id}g`} gradientUnits="userSpaceOnUse" x1="24" y1="12" x2="76" y2="88">
             <stop offset="0" stopColor="#c9b6ff" />
             <stop offset="1" stopColor="#7a52e0" />
           </linearGradient>
-        </defs>
-      )}
-      <path d="M50 12C30 12 24 34 38 50L62 88" stroke={stroke} strokeWidth="13" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M50 12C70 12 76 34 62 50L38 88" stroke={stroke} strokeWidth="13" strokeLinecap="round" strokeLinejoin="round" opacity={mono ? 1 : 0.85} />
+        )}
+        <clipPath id={`${id}c`}><rect x="0" y="47" width="100" height="60" /></clipPath>
+        <mask id={`${id}m`} maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100">
+          <rect width="100" height="100" fill="#fff" />
+          <g clipPath={`url(#${id}c)`}>
+            <path d="M50 12C70 12 76 34 62 50L38 88" stroke="#000" strokeWidth="20" strokeLinecap="round" strokeLinejoin="round" />
+          </g>
+        </mask>
+      </defs>
+      <g stroke={stroke} strokeWidth="13" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M50 12C30 12 24 34 38 50L62 88" mask={`url(#${id}m)`} />
+        <path d="M50 12C70 12 76 34 62 50L38 88" />
+      </g>
     </svg>
   );
 }
